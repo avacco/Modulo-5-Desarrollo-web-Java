@@ -11,12 +11,13 @@
 <body>
 
 	<h1>Alumnos</h1>	
-	<table>
+	<table class="table table-stripped">
 		<thead>
 			<tr>
 				<th>ID</th>
 				<th>Nombre</th>
 				<th>Carrera</th>
+				<th>Fecha de Nacimiento</th>
 				<th>Acciones</th>
 			</tr>
 		</thead>
@@ -26,6 +27,7 @@
 					<td><c:out value="${alumno.id}"></c:out></td>
 					<td><c:out value="${alumno.nombre}"></c:out></td>
 					<td><c:out value="${alumno.carrera}"></c:out></td>
+					<td><c:out value="${alumno.fechaNacimiento}"></c:out></td>
 					<td>
 						<a href="${pageContext.request.contextPath}/AlumnoController?accion=editar&amp;id=${alumno.id}">Editar</a>
 						<a href="${pageContext.request.contextPath}/AlumnoController?accion=eliminar&amp;id=${alumno.id}">Eliminar</a>

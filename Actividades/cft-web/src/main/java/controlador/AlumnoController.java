@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,9 +83,13 @@ public class AlumnoController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		// Inicializa variables a utilizar
-		int id 			= 0;
-		String nombre 	= request.getParameter("nombre");
-		String carrera 	= request.getParameter("carrera");
+		int id 						= 0;
+		String nombre 				= request.getParameter("nombre");
+		String carrera 				= request.getParameter("carrera");
+		
+		// Convierte el string recibido de HTML5 input date a LocalDate de java
+		// El string se envia en el formato YYYY-MM-DD
+		LocalDate fechaNacimiento 	= LocalDate.parse(request.getParameter("nacimiento"));
 		
 		// Reemplaza variable id por parametros enviados desde formulario. Lo convierte a Integer si es valido, de lo contrario, echa un error.
 		try {
@@ -95,18 +100,17 @@ public class AlumnoController extends HttpServlet {
 
 		// Crea el alumno si la id es 0
 		if (id == 0) {
-			Alumno alumnoNuevo = new Alumno(nombre,carrera);
+			Alumno alumnoNuevo = new Alumno(nombre,carrera,fechaNacimiento);
 			try {
 				crearAlumno(alumnoNuevo);
-				response.sendRedirect("cft-web/AlumnoController?accion=listar");
+				response.sendRedirect("/cft-web/AlumnoController?accion=listar");
 			} catch (NamingException | SQLException e) {
 				e.printStackTrace();
 				response.sendError(500);
-			}
-			response.sendRedirect("/cft-web/AlumnoController?accion=listar");
+			}			
 		} else {
 			//editar
-			Alumno alumnoAEditar = new Alumno(id,nombre,carrera);
+			Alumno alumnoAEditar = new Alumno(id,nombre,carrera,fechaNacimiento);
 			try {
 				editarAlumno(alumnoAEditar);
 				response.sendRedirect("/cft-web/AlumnoController?accion=listar");
@@ -123,7 +127,7 @@ public class AlumnoController extends HttpServlet {
 			PreparedStatement ps = conn.prepareStatement("DELETE FROM alumnosact WHERE ID = ?");
 		) {
 			ps.setInt(1, alumnoId);
-			int filasEliminadas = ps.executeUpdate();
+			ps.executeUpdate();
 		} 
 		
 	}
@@ -147,8 +151,9 @@ public class AlumnoController extends HttpServlet {
 				int id = rs.getInt("id");
 				String nombre = rs.getString("nombre");
 				String carrera = rs.getString("carrera");
+				LocalDate fechaNacimiento 	= rs.getObject("fecha_nacimiento", LocalDate.class);
 				// Instancia objeto Alumno
-				Alumno alumno = new Alumno(id,nombre,carrera);
+				Alumno alumno = new Alumno(id,nombre,carrera,fechaNacimiento);
 				// Lo añade a la lista
 				alumnos.add(alumno);
 			}
@@ -169,7 +174,8 @@ public class AlumnoController extends HttpServlet {
 					int id = rs.getInt("id");
 					String nombre = rs.getString("nombre");
 					String carrera = rs.getString("carrera");
-					return new Alumno(id,nombre,carrera);
+					LocalDate fechaNacimiento 	= rs.getObject("fecha_nacimiento", LocalDate.class);
+					return new Alumno(id,nombre,carrera,fechaNacimiento);
 				}else {
 					return null;
 				}
@@ -179,12 +185,13 @@ public class AlumnoController extends HttpServlet {
 	public void editarAlumno(Alumno alumno) throws SQLException, NamingException {
 		try(
 				Connection conn = getConexion();
-				PreparedStatement ps = conn.prepareStatement("UPDATE alumnosact SET nombre = ?, carrera = ? WHERE id = ?");
+				PreparedStatement ps = conn.prepareStatement("UPDATE alumnosact SET nombre = ?, carrera = ?, fecha_nacimiento = ? WHERE id = ?");
 			) {
 
 				ps.setString(1, alumno.getNombre());
 				ps.setString(2, alumno.getCarrera());
-				ps.setInt(3, alumno.getId());
+				ps.setObject(3, alumno.getFechaNacimiento());
+				ps.setInt(4, alumno.getId());
 				ps.executeUpdate();
 			} 
 	}
@@ -193,10 +200,12 @@ public class AlumnoController extends HttpServlet {
 	public void crearAlumno(Alumno alumno) throws NamingException, SQLException {
 		try(
 			Connection conn = getConexion();
+			PreparedStatement ps = conn.prepareStatement("INSERT INTO alumnosact(nombre,carrera,fecha_nacimiento) VALUES (?,?,?)");
+
 		) {
-			PreparedStatement ps = conn.prepareStatement("INSERT INTO alumnosact(nombre,carrera) VALUES (?,?)");
 			ps.setString(1, alumno.getNombre());
 			ps.setString(2, alumno.getCarrera());
+			ps.setObject(3, alumno.getFechaNacimiento());
 			ps.executeUpdate();			
 		}
 	}

@@ -26,7 +26,7 @@
 				<label class="form-label">Fecha de Nacimiento:</label>
 				<input class="form-control" type="date" id="nacimiento" name="nacimiento" value="${alumno.fechaNacimiento}" />
 			</div>
-			<button class="btn btn-primary" type="submit">Guardar</button>
+			<button class="btn btn-primary" type="submit">Guardar alumno</button>
 		</form>
 	</div>
 </div>

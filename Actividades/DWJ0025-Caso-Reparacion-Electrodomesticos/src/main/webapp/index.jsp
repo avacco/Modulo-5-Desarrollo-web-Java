@@ -15,6 +15,13 @@
 				Listar todo
 			</a>
 		</li>
+		
+		<li>
+			<a href="Controller?accion=formulario">
+				Formulario
+			</a>
+		</li>
+		
 	</ul>
 
 </body>

@@ -14,6 +14,12 @@ public class Cliente {
 		
 	}
 	
+	public Cliente(String nombre, String telefono, String direccion) {
+		this.nombre = nombre;
+		this.telefono = telefono;
+		this.direccion = direccion;
+	}
+	
 	public Cliente(int id, String nombre, String telefono, String direccion) {
 		super();
 		this.id = id;

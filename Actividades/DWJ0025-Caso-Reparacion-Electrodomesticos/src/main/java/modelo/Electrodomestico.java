@@ -6,17 +6,25 @@ public class Electrodomestico {
 	private String nombre;
 	private String falla;
 	private String cliente;
+	private int idCliente;
 	
 	public Electrodomestico() {
 		
 	}
 	
-	public Electrodomestico(int id, String nombre, String falla, String cliente) {
-		super();
+	public Electrodomestico(String nombre, String falla, int idCliente) {
+		this.nombre = nombre;
+		this.falla = falla;
+		this.idCliente = idCliente;
+	}
+	
+	public Electrodomestico(int id, String nombre, String falla, String cliente, int idCliente) {
 		this.id = id;
 		this.nombre = nombre;
 		this.falla = falla;
 		this.cliente = cliente;
+		this.idCliente = idCliente;
+
 	}
 
 	public int getId() {
@@ -49,6 +57,14 @@ public class Electrodomestico {
 
 	public void setCliente(String cliente) {
 		this.cliente = cliente;
+	}
+
+	public int getIdCliente() {
+		return idCliente;
+	}
+
+	public void setIdCliente(int idCliente) {
+		this.idCliente = idCliente;
 	}
 	
 	

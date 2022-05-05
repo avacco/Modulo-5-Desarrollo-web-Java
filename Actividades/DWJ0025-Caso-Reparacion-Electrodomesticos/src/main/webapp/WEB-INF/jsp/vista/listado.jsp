@@ -48,7 +48,7 @@
 					<td><c:out value="${electrodomesticos.id}"></c:out></td>
 					<td><c:out value="${electrodomesticos.nombre}"></c:out></td>
 					<td><c:out value="${electrodomesticos.falla}"></c:out></td>
-					<td><c:out value="${electrodomesticos.cliente}"></c:out></td>
+					<td><c:out value="${electrodomesticos.cliente_id.nombre}"></c:out></td>
 				</tr>			
 			</c:forEach>
 		</tbody>
@@ -70,9 +70,9 @@
 			<c:forEach var="odt" items="${odt}">
 				<tr>
 					<td><c:out value="${odt.id}"></c:out></td>
-					<td><c:out value="${odt.objeto}"></c:out></td>
+					<td><c:out value="${odt.electrodomestico_id.nombre}"></c:out></td>
 					<td><c:out value="${odt.estado}"></c:out></td>
-					<td><c:out value="${odt.cliente}"></c:out></td>
+					<td><c:out value="${odt.cliente.electrodomestico_id.cliente_id.nombre}"></c:out></td>
 					<td><c:out value="${odt.fechaSolicitud}"></c:out></td>
 					<td><c:out value="${odt.fechaActualizacionOrden}"></c:out></td>
 				</tr>			

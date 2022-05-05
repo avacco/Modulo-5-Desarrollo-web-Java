@@ -64,6 +64,7 @@ public class AlumnoController extends HttpServlet {
 				String vistaJSP = "/WEB-INF/jsp/vista/alumno/alumno-form.jsp";
 				request.getRequestDispatcher(vistaJSP).forward(request, response);
 				break;
+				
 			case "listar":
 				try {
 					List<Alumno> alumnos = alumnoDAO.getAlumnos();
@@ -75,6 +76,7 @@ public class AlumnoController extends HttpServlet {
 					response.sendError(500);
 				}
 				break;
+				
 			case "eliminar":
 				int alumnoId = Integer.parseInt(request.getParameter("id"));
 				try {
@@ -86,6 +88,7 @@ public class AlumnoController extends HttpServlet {
 					// redirecciona con la accion listar
 					response.sendRedirect("/cft-web/AlumnoController?accion=listar");
 				break;
+				
 			case "editar":
 				try {
 					alumnoId = Integer.parseInt(request.getParameter("id"));

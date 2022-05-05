@@ -1,102 +1,69 @@
 package modelo;
 
+import java.time.LocalDate;
+
 public class OrdenDeTrabajo {
 
 	private int id;
-	private String objeto;
 	private String estado;
-	private String cliente;
-	private String fechaSolicitud;
-	private String fechaActualizacionOrden;
+	private Electrodomestico electrodomestico_id;
+	private LocalDate fechaSolicitud;
+	private LocalDate fechaActualizacionOrden;
 	
 	public OrdenDeTrabajo() {
 		
 	}
-	
-	
-	
-	public OrdenDeTrabajo(int id, String objeto, String estado, String cliente, String fechaSolicitud, String fechaActualizacionOrden) {
+
+	public OrdenDeTrabajo(int id, String estado, LocalDate fechaSolicitud, LocalDate fechaActualizacionOrden, Electrodomestico electrodomestico_id) {
 		super();
-		this.id = id;
-		this.objeto = objeto;
-		this.estado = estado;
-		this.cliente = cliente;
-		this.fechaSolicitud = fechaSolicitud;
+		this.id 					 = id;
+		this.estado					 = estado;
+		this.fechaSolicitud 		 = fechaSolicitud;
 		this.fechaActualizacionOrden = fechaActualizacionOrden;
+		this.electrodomestico_id 	 = electrodomestico_id;
+
 	}
-
-
 
 	public int getId() {
 		return id;
 	}
 
-
-
 	public void setId(int id) {
 		this.id = id;
 	}
 
-
-
-	public String getObjeto() {
-		return objeto;
+	public Electrodomestico getElectrodomestico_id() {
+		return electrodomestico_id;
 	}
 
-
-
-	public void setObjeto(String objeto) {
-		this.objeto = objeto;
+	public void setElectrodomestico_id(Electrodomestico electrodomestico_id) {
+		this.electrodomestico_id = electrodomestico_id;
 	}
 
+	public LocalDate getFechaSolicitud() {
+		return fechaSolicitud;
+	}
 
+	public void setFechaSolicitud(LocalDate fechaSolicitud) {
+		this.fechaSolicitud = fechaSolicitud;
+	}
+
+	public LocalDate getFechaActualizacionOrden() {
+		return fechaActualizacionOrden;
+	}
+
+	public void setFechaActualizacionOrden(LocalDate fechaActualizacionOrden) {
+		this.fechaActualizacionOrden = fechaActualizacionOrden;
+	}
 
 	public String getEstado() {
 		return estado;
 	}
 
-
-
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-
-
-
-	public String getCliente() {
-		return cliente;
-	}
-
-
-
-	public void setCliente(String cliente) {
-		this.cliente = cliente;
-	}
-
-
-
-	public String getFechaSolicitud() {
-		return fechaSolicitud;
-	}
-
-
-
-	public void setFechaSolicitud(String fechaSolicitud) {
-		this.fechaSolicitud = fechaSolicitud;
-	}
-
-
-
-	public String getFechaActualizacionOrden() {
-		return fechaActualizacionOrden;
-	}
-
-
-
-	public void setFechaActualizacionOrden(String fechaActualizacionOrden) {
-		this.fechaActualizacionOrden = fechaActualizacionOrden;
-	}
-
+	
 
 
 		

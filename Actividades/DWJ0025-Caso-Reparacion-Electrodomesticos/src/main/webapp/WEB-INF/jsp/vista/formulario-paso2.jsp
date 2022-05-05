@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ page isELIgnored="false" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,15 +17,8 @@
 	<div class="col mb-6">
 		<form method="POST" action="Controller?accion=addElectrodomestico">
 		
-		<div>
-		<%-- guarda los datos necesarios para crear un objeto cliente --%>
-			<input type="hidden" name="idCliente" value="${cliente.id}" />
-			<input type="hidden" name="nombreCliente" value="${cliente.nombre}" />
-			<input type="hidden" name="telefonoCliente" value="${cliente.telefono}" />
-			<input type="hidden" name="direccionCliente" value="${cliente.direccion}" />		
-		</div>
-		
-		
+		  <input type="hidden" class="form-control" id="id" name="id" value="${cliente.id}">
+		  		
 		  <div class="mb-3">
 		    <label class="form-label">Nombre Cliente</label>
 		    <input type="text" class="form-control" id="nombre" name="nombre" disabled value="${cliente.nombre}">

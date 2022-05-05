@@ -19,9 +19,29 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import dao.ClientesDAO;
+import dao.ClientesDAOImp;
+import dao.ElectrodomesticosDAO;
+import dao.ElectrodomesticosDAOImp;
+import dao.OdtDAO;
+import dao.OdtDAOImp;
+
+
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+    
+	private ClientesDAO clientesDAO;
+	private ElectrodomesticosDAO electrodomesticosDAO;
+	private OdtDAO odtDAO;
+	
+	@Override
+	public void init() throws ServletException{
+		super.init();
+		this.clientesDAO = new ClientesDAOImp();
+		this.electrodomesticosDAO = new ElectrodomesticosDAOImp(this.clientesDAO);
+		this.odtDAO = new OdtDAOImp(this.electrodomesticosDAO);
+	}
+	
     public Controller() {
         super();
     }
@@ -30,20 +50,26 @@ public class Controller extends HttpServlet {
 		
 		
 		switch(accion) {
-		case "listar":
+		case "listar":	
+			List<Cliente> 			clientes			= null;
+			List<Electrodomestico>  electrodomesticos 	= null;
+			List<OrdenDeTrabajo> 	odt 				= null;
 			try {
-				List<Cliente> clientes = getClientes();
-				List<Electrodomestico> electrodomesticos = getElectrodomesticos();
-				List<OrdenDeTrabajo> odt = getODT();
+				clientes 			= clientesDAO.findAllClientes();
+				electrodomesticos 	= electrodomesticosDAO.findAllElectrodomesticos();
+				odt 				= odtDAO.findAllOrdenesDeTrabajo();
+			} catch ( Exception e) {
+				e.printStackTrace();
+				response.sendError(500);
+				return;
+			}
+				
 				request.setAttribute("clientes", clientes);
 				request.setAttribute("electrodomesticos", electrodomesticos);				
 				request.setAttribute("odt", odt);				
 				request.getRequestDispatcher("/WEB-INF/jsp/vista/listado.jsp").forward(request, response);
 
-			} catch (SQLException | NamingException e) {
-				response.sendError(500);
-				e.printStackTrace();
-			}
+			
 			break;
 		
 		case "formulario":
@@ -70,10 +96,13 @@ public class Controller extends HttpServlet {
 			
 			try {
 				// añade el cliente a la base de datos
-				nuevoCliente = crearCliente(nuevoCliente);
+				clientesDAO.createCliente(nuevoCliente);
+				
+				// una vez añadido a la base de datos, y ya con su id asignado por la misma, lo devuelve para su uso en el siguiente paso
+				Cliente cliente = clientesDAO.findLastCreatedCliente();
 				
 				// pasa al siguiente paso
-				request.setAttribute("cliente", nuevoCliente);
+				request.setAttribute("cliente", cliente);
 				request.getRequestDispatcher("/WEB-INF/jsp/vista/formulario-paso2.jsp").forward(request, response);				
 				
 			} catch (SQLException | NamingException e) {
@@ -83,25 +112,29 @@ public class Controller extends HttpServlet {
 			break;
 		
 		case "addElectrodomestico":
-			// trae los datos guardados para crear el objeto cliente
-			int idCliente			= Integer.parseInt(request.getParameter("idCliente"));
-			String nombreCliente	= request.getParameter("nombreCliente");
-			String telefonoCliente	= request.getParameter("telefonoCliente");
-			String direccionCliente	= request.getParameter("direccionCliente");
+			// trae el id del cliente guardado para crear el objeto cliente, utilizando el metodo buscar
+			int idCliente = Integer.parseInt(request.getParameter("id"));
 			
-			// crea el cliente
-			Cliente cliente = new Cliente(idCliente,nombreCliente,telefonoCliente,direccionCliente);
+			// busca el cliente registrado
+			Cliente cliente = null;
+			try {
+				cliente = clientesDAO.findClienteById(idCliente);
+			} catch (SQLException | NamingException e1) {
+				e1.printStackTrace();
+				response.sendError(500);
+			}
 			
 			// trae los datos del producto
 			String nombreProducto 	= request.getParameter("nombreProducto");
 			String fallaProducto 	= request.getParameter("fallaProducto");
 
 			// crea el producto
-			Electrodomestico electrodomestico = new Electrodomestico(nombreProducto,fallaProducto,idCliente);
+			Electrodomestico electrodomestico = new Electrodomestico(nombreProducto,fallaProducto,cliente);
+
 			
 			try {
 				// añade el producto a la base de datos
-				electrodomestico = crearElectrodomestico(electrodomestico);
+				electrodomesticosDAO.createElectrodomestico(electrodomestico);
 				
 				// simula un "refresh" de la pagina utilizando los mismos datos que se recogieron antes
 				request.setAttribute("cliente", cliente);
@@ -124,133 +157,6 @@ public class Controller extends HttpServlet {
 		
 	}
 
-	
-	public Connection getConexion() throws NamingException, SQLException {
-		InitialContext initialContext = new InitialContext();
-		DataSource dataSource = (DataSource) initialContext.lookup("java:comp/env/jdbc/postgres");
-		return dataSource.getConnection();
-	}
-	
-	private List<Cliente> getClientes() throws SQLException, NamingException {
-		try(
-				Connection conn = getConexion();
-				Statement st = conn.createStatement();
-			) {
-			ResultSet rs = st.executeQuery("SELECT * FROM cliente");
-			List<Cliente> clientes = new ArrayList<Cliente>();
-			while(rs.next()) {
-				int id = rs.getInt("id_cliente");
-				String nombre = rs.getString("Nombre");
-				String telefono = rs.getString("Telefono");
-				String direccion = rs.getString("Direccion");
-				Cliente cliente = new Cliente(id,nombre,telefono,direccion);
-				clientes.add(cliente);
-			}
-			return clientes;
-		}
-	}
-	
-	private List<Electrodomestico> getElectrodomesticos() throws SQLException, NamingException {
-		try(
-				Connection conn = getConexion();
-				Statement st = conn.createStatement();
-			) {
-			ResultSet rs = st.executeQuery("SELECT electrodomestico.id_electrodomestico, electrodomestico.nombre, electrodomestico.falla, electrodomestico.id_cliente, cliente.nombre AS asignado FROM electrodomestico, cliente WHERE electrodomestico.id_cliente = cliente.id_cliente");
-			List<Electrodomestico> electrodomesticos = new ArrayList<>();
-			while(rs.next()) {
-				int id = rs.getInt("id_electrodomestico");
-				String nombre = rs.getString("Nombre");
-				String falla = rs.getString("Falla");
-				String cliente = rs.getString("asignado");
-				int idCliente = rs.getInt("id_cliente");
-				Electrodomestico electrodomestico= new Electrodomestico(id,nombre,falla,cliente,idCliente);
-				electrodomesticos.add(electrodomestico);
-			}
-			return electrodomesticos;
-		}
-	}
-	
-	private List<OrdenDeTrabajo> getODT() throws SQLException, NamingException {
-		try(
-				Connection conn = getConexion();
-				Statement st = conn.createStatement();
-			) {
-			ResultSet rs = st.executeQuery("SELECT ordendetrabajo.id_odt, ordendetrabajo.estado, ordendetrabajo.fechasolicitud, ordendetrabajo.fechaactualizacionorden, electrodomestico.nombre AS objeto, cliente.nombre AS asignado FROM ordendetrabajo, electrodomestico, cliente WHERE ordendetrabajo.id_electrodomestico = electrodomestico.id_electrodomestico AND electrodomestico.id_cliente = cliente.id_cliente");
-			List<OrdenDeTrabajo> ordenesDeTrabajo = new ArrayList<>();
-			while(rs.next()) {
-				int id = rs.getInt("id_odt");
-				String objeto = rs.getString("objeto");
-				String estado = rs.getString("estado");
-				String cliente = rs.getString("asignado");
-				String fechaSolicitud = rs.getString("fechasolicitud");
-				String fechaActualizacionOrden = rs.getString("fechaactualizacionorden");
-				OrdenDeTrabajo ordenDeTrabajo= new OrdenDeTrabajo(id,objeto,estado,cliente,fechaSolicitud,fechaActualizacionOrden);
-				ordenesDeTrabajo.add(ordenDeTrabajo);
-			}
-			return ordenesDeTrabajo;
-		}
-	}
-	
-	private Cliente crearCliente(Cliente nuevoCliente) throws SQLException, NamingException {
-		try(
-				Connection conn = getConexion();
-				PreparedStatement ps = conn.prepareStatement("INSERT INTO cliente(nombre, telefono, direccion) VALUES (?,?,?)");
 
-			) {
-			ps.setString(1, nuevoCliente.getNombre());
-			ps.setString(2, nuevoCliente.getTelefono());
-			ps.setString(3, nuevoCliente.getDireccion());
-			ps.executeUpdate();
-		}
-		
-		try(
-				Connection conn = getConexion();
-				Statement st = conn.createStatement();
-			) {
-			//toma el ultimo valor añadido
-			ResultSet rs = st.executeQuery("SELECT * FROM cliente ORDER BY id_cliente DESC LIMIT 1");
-			// setea el id del objeto traido para retornarlo, esta vez completo
-			
-			if(rs.next()) {				
-				int id = rs.getInt("id_cliente");
-				nuevoCliente.setId(id);
-				return nuevoCliente;
-			}else {
-				return null;
-			}
-		}
-		
-	}
-	
-	private Electrodomestico crearElectrodomestico(Electrodomestico electrodomestico) throws SQLException, NamingException {
-		try(
-				Connection conn = getConexion();
-				PreparedStatement ps = conn.prepareStatement("INSERT INTO electrodomestico(nombre, falla, id_cliente) VALUES (?,?,?)");
-
-			) {
-			ps.setString(1, electrodomestico.getNombre());
-			ps.setString(2, electrodomestico.getFalla());
-			ps.setInt(3, electrodomestico.getIdCliente());
-			ps.executeUpdate();
-			
-		}
-		
-		try(
-				Connection conn = getConexion();
-				Statement st = conn.createStatement();
-			) {
-			ResultSet rs = st.executeQuery("SELECT * FROM electrodomestico ORDER BY id_electrodomestico DESC LIMIT 1");
-			if(rs.next()) {				
-				int id = rs.getInt("id_electrodomestico");
-				electrodomestico.setId(id);
-				return electrodomestico;
-			}else {
-				return null;
-			}
-		}
-		
-		
-	}
-	
 	
 }

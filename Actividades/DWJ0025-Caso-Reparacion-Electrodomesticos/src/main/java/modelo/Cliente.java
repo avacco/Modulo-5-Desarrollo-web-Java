@@ -1,31 +1,27 @@
 package modelo;
 
-import java.util.ArrayList;
-
 public class Cliente {
 	
 	private int id;
 	private String nombre;
 	private String telefono;
 	private String direccion;
-	private ArrayList<Electrodomestico> electrodomesticos;
 	
 	public Cliente() {
 		
 	}
 	
 	public Cliente(String nombre, String telefono, String direccion) {
-		this.nombre = nombre;
-		this.telefono = telefono;
-		this.direccion = direccion;
+		this.nombre 	= nombre;
+		this.telefono 	= telefono;
+		this.direccion 	= direccion;
 	}
 	
 	public Cliente(int id, String nombre, String telefono, String direccion) {
-		super();
-		this.id = id;
-		this.nombre = nombre;
-		this.telefono = telefono;
-		this.direccion = direccion;
+		this.id 		= id;
+		this.nombre 	= nombre;
+		this.telefono 	= telefono;
+		this.direccion 	= direccion;
 	}
 
 	public int getId() {
@@ -60,15 +56,7 @@ public class Cliente {
 		this.direccion = direccion;
 	}
 
-	public ArrayList<Electrodomestico> getElectrodomesticos() {
-		return electrodomesticos;
-	}
 
-	public void setElectrodomesticos(ArrayList<Electrodomestico> electrodomesticos) {
-		this.electrodomesticos = electrodomesticos;
-	}
-
-	
 	
 	
 }

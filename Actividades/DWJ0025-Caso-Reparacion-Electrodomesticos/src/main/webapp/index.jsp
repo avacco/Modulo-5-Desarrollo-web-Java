@@ -17,6 +17,12 @@
 		</li>
 		
 		<li>
+			<a href="Controller?accion=listarodt">
+				Listar ODT
+			</a>
+		</li>
+		
+		<li>
 			<a href="Controller?accion=formulario">
 				Formulario
 			</a>

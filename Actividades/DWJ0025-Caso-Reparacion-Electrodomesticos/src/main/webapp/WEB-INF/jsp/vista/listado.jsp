@@ -53,32 +53,6 @@
 			</c:forEach>
 		</tbody>
 	</table>
-	
-		<h1>Ordenes de trabajo</h1>	
-	<table class="table table-striped">
-		<thead>
-			<tr>
-				<th class="col">ID</th>
-				<th class="col">Objeto</th>
-				<th class="col">Estado</th>
-				<th class="col">Cliente asociado</th>
-				<th class="col">Fecha Solicitud</th>
-				<th class="col">Fecha Ultima Actualizacion</th>
-			</tr>
-		</thead>
-		<tbody>
-			<c:forEach var="odt" items="${odt}">
-				<tr>
-					<td><c:out value="${odt.id}"></c:out></td>
-					<td><c:out value="${odt.electrodomestico_id.nombre}"></c:out></td>
-					<td><c:out value="${odt.estado}"></c:out></td>
-					<td><c:out value="${odt.cliente.electrodomestico_id.cliente_id.nombre}"></c:out></td>
-					<td><c:out value="${odt.fechaSolicitud}"></c:out></td>
-					<td><c:out value="${odt.fechaActualizacionOrden}"></c:out></td>
-				</tr>			
-			</c:forEach>
-		</tbody>
-	</table>
 </div>		
 	
 		

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.naming.NamingException;
 
+import modelo.Cliente;
 import modelo.Electrodomestico;
 
 public interface ElectrodomesticosDAO {
@@ -14,4 +15,5 @@ public interface ElectrodomesticosDAO {
 	public void createElectrodomestico(Electrodomestico electrodomestico)		throws SQLException, NamingException;
 	public void editElectrodomestico(Electrodomestico electrodomestico)			throws SQLException, NamingException;
 	public void deleteElectrodomestico(int electrodomesticoId)					throws SQLException, NamingException;
+	public Electrodomestico findLastCreatedElectrodomestico()					throws SQLException, NamingException;
 }

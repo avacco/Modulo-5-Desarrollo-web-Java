@@ -21,6 +21,7 @@ public class ElectrodomesticosDAOImp implements ElectrodomesticosDAO {
 		this.clientesDAO = clientesDAO;
 	}
 	
+	
 	@Override
 	public List<Electrodomestico> findAllElectrodomesticos() throws SQLException, NamingException {
 		try(
@@ -45,7 +46,23 @@ public class ElectrodomesticosDAOImp implements ElectrodomesticosDAO {
 
 	@Override
 	public Electrodomestico findElectrodomesticoById(int electrodomesticoId) throws SQLException, NamingException {
-		// TODO Auto-generated method stub
+		try(
+				Connection conn = DBUtils.getConexion();
+				PreparedStatement ps = conn.prepareStatement("SELECT * FROM Electrodomestico WHERE id_electrodomestico = ?");
+			) {
+			ps.setInt(1, electrodomesticoId);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				int id 				= rs.getInt("id_electrodomestico");
+				String nombre 		= rs.getString("Nombre");
+				String falla 		= rs.getString("Falla");
+				int idCliente 		= rs.getInt("id_cliente");
+				Cliente cliente 	= clientesDAO.findClienteById(idCliente);
+				
+				return new Electrodomestico(id,nombre,falla,cliente);
+			}
+			
+		}
 		return null;
 	}
 
@@ -76,6 +93,27 @@ public class ElectrodomesticosDAOImp implements ElectrodomesticosDAO {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public Electrodomestico findLastCreatedElectrodomestico() throws SQLException, NamingException {
+		try(
+				Connection conn = DBUtils.getConexion();
+				Statement st = conn.createStatement();
+			) {
+			ResultSet rs = st.executeQuery("SELECT * FROM electrodomestico ORDER BY id_electrodomestico DESC LIMIT 1");
+			if(rs.next()) {
+				int id 				= rs.getInt("id_electrodomestico");
+				String nombre 		= rs.getString("Nombre");
+				String falla 		= rs.getString("Falla");
+				int idCliente 		= rs.getInt("id_cliente");
+				Cliente cliente 	= clientesDAO.findClienteById(idCliente);
+				return new Electrodomestico(id,nombre,falla,cliente);
+			}
+			
+		}
+		return null;
+	}
+	
 
 
 }

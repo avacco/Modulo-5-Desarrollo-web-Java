@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.naming.NamingException;
 
+import modelo.Cliente;
 import modelo.OrdenDeTrabajo;
 
 public interface OdtDAO {
@@ -14,5 +15,5 @@ public interface OdtDAO {
 	public void createOrdenDeTrabajo(OrdenDeTrabajo odt)	throws SQLException, NamingException;
 	public void editOrdenDeTrabajo(OrdenDeTrabajo odt)		throws SQLException, NamingException;
 	public void deleteOrdenDeTrabajo(int odtId)				throws SQLException, NamingException;
-
+	public OrdenDeTrabajo findLastCreatedOrdenDeTrabajo()	throws SQLException, NamingException;
 }

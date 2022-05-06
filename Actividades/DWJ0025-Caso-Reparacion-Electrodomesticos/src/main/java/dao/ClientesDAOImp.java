@@ -46,10 +46,11 @@ public class ClientesDAOImp implements ClientesDAO {
 			ps.setInt(1, clienteId);
 			ResultSet rs = ps.executeQuery();
 			if(rs.next()) {
-				int id 				= rs.getInt("id_cliente");
-				String nombre 		= rs.getString("nombre");
-				String telefono 	= rs.getString("telefono");
-				String direccion 	= rs.getString("direccion");
+				int id = rs.getInt("id_cliente");
+				String nombre = rs.getString("Nombre");
+				String telefono = rs.getString("Telefono");
+				String direccion = rs.getString("Direccion");
+				
 				return new Cliente(id,nombre,telefono,direccion);
 			}
 			

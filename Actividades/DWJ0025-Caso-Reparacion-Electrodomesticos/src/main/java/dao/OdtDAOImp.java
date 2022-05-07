@@ -24,11 +24,11 @@ public class OdtDAOImp implements OdtDAO {
 			
 			// pedazo de query, ojala temporal, hasta que descubra como evitar que el servidor explote con varias queries anidadas.
 			String query = "SELECT DISTINCT cliente.nombre AS cliente, electrodomestico.nombre as producto, ordendetrabajo.id_odt, ordendetrabajo.estado, ordendetrabajo.fechasolicitud, ordendetrabajo.fechaactualizacionorden, ordendetrabajo.id_electrodomestico\r\n"
-					+ "FROM cliente, electrodomestico, ordendetrabajo\r\n"
-					+ "WHERE cliente.id_cliente = electrodomestico.id_cliente \r\n"
-					+ "AND ordendetrabajo.id_electrodomestico = electrodomestico.id_electrodomestico;\r\n"
-					+ ";";
-			
+				 		 + "FROM cliente, electrodomestico, ordendetrabajo\r\n"
+						 + "WHERE cliente.id_cliente = electrodomestico.id_cliente \r\n"
+						 + "AND ordendetrabajo.id_electrodomestico = electrodomestico.id_electrodomestico;\r\n"
+						 + ";";
+				
 			ResultSet rs = st.executeQuery(query);
 			List<OrdenDeTrabajo> ordenesDeTrabajo = new ArrayList<>();
 			while(rs.next()) {

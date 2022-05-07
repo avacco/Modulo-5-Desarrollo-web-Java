@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import modelo.Alumno;
 import modelo.Carrera;
+import validador.AlumnoValidator;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -113,39 +114,53 @@ public class AlumnoController extends HttpServlet {
 
 
 
+	@SuppressWarnings("unused")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		// Inicializa variables a utilizar
-		int id 						= 0;
-		String nombre 				= request.getParameter("nombre");
-		int carreraId 				= Integer.parseInt( request.getParameter("carrera_id"));
+		// toma los valores como string para ser validados
+		String idStr 			= request.getParameter("id");
+		String nombreStr 		= request.getParameter("nombre");
+		String nacimientoStr 	= request.getParameter("nacimiento");
+		
+		// envia al validador los valores antes tomados
+		AlumnoValidator validador = new AlumnoValidator(idStr,nombreStr,nacimientoStr);
+		
+		// crea un objeto alumno con los datos ya validados
+		Alumno alumno = validador.makeObject();
+
+		// inicializa carrera
 		Carrera carrera 			= null;
 		
 		try {
-			carrera 			= carreraDAO.getCarreraById(carreraId);
+			// busca las carreras por id
+			int carreraId 	= Integer.parseInt( request.getParameter("carrera_id"));
+			carrera 		= carreraDAO.getCarreraById(carreraId);
+			
+			// carreras a pasar al formulario
+			List<Carrera> carreras = carreraDAO.getCarreras();
+			request.setAttribute("carreras", carreras);
+			
 		} catch (SQLException | NamingException e1) {
 			response.sendError(500);
 			e1.printStackTrace();
 			return;
 		}
 		
-		
-		// Convierte el string recibido de HTML5 input date a LocalDate de java
-		// El string se envia en el formato YYYY-MM-DD
-		LocalDate fechaNacimiento 	= LocalDate.parse(request.getParameter("nacimiento"));
-		
-		// Reemplaza variable id por parametros enviados desde formulario. Lo convierte a Integer si es valido, de lo contrario, echa un error.
-		try {
-			id = Integer.parseInt(request.getParameter("id"));
-		} catch (NumberFormatException e) {
-			System.err.println("id se setea a 0 de manera automatica");
+		// si el alumno es null, hubieron errores de validacion
+		if (alumno == null){
+			request.setAttribute("validador", validador);	
+			String jspForm = "/WEB-INF/jsp/vista/alumno/alumno-form.jsp";
+			request.getRequestDispatcher(jspForm).forward(request,response);
+			return;
 		}
-
+		
+		// setea en alumno ahora que no es null, su carrera
+		alumno.setCarrera(carrera);
+				
 		// Crea el alumno si la id es 0
-		if (id == 0) {
-			Alumno alumnoNuevo = new Alumno(nombre,carrera,fechaNacimiento);
+		if (alumno.getId() == 0) {
 			try {
-				alumnoDAO.crearAlumno(alumnoNuevo);
+				alumnoDAO.crearAlumno(alumno);
 				response.sendRedirect("/cft-web/AlumnoController?accion=listar");
 			} catch (NamingException | SQLException e) {
 				e.printStackTrace();
@@ -153,9 +168,8 @@ public class AlumnoController extends HttpServlet {
 			}			
 		} else {
 			//editar
-			Alumno alumnoAEditar = new Alumno(id,nombre,carrera,fechaNacimiento);
 			try {
-				alumnoDAO.editarAlumno(alumnoAEditar);
+				alumnoDAO.editarAlumno(alumno);
 				response.sendRedirect("/cft-web/AlumnoController?accion=listar");
 			} catch (SQLException | NamingException e) {
 				e.printStackTrace();

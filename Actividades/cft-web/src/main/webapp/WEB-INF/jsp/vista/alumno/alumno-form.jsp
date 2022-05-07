@@ -12,6 +12,13 @@
 <div class="container">
 	<div class="row">
 		<h1>Formulario Alumno</h1>
+		
+		<c:if test="${not empty validador }">
+		<div style="background: red; color: yellow; padding: 15px; margin-bottom: 5px;">
+			${validador.errores}
+		</div>
+		</c:if>
+		
 		<form method="POST" action="/cft-web/AlumnoController">
 		<input type="hidden" name="id" value="${alumno.id}" />
 			<div class="col mb-3">

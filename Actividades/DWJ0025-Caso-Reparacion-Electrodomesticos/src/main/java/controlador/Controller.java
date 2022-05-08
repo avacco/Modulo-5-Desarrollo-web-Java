@@ -33,7 +33,7 @@ public class Controller extends HttpServlet {
 		super.init();
 		this.clientesDAO = new ClientesDAOImp();
 		this.electrodomesticosDAO = new ElectrodomesticosDAOImp(this.clientesDAO);
-		this.odtDAO = new OdtDAOImp();
+		this.odtDAO = new OdtDAOImp(this.electrodomesticosDAO);
 	}
 	
     public Controller() {
@@ -43,22 +43,30 @@ public class Controller extends HttpServlet {
 		String accion = request.getParameter("accion");
 		
 		switch(accion) {
-		case "listar":	
-			List<Cliente> 			clientes			= null;
-			List<Electrodomestico>  electrodomesticos 	= null;
+		case "listarcli":	
+			List<Cliente> clientes	= null;
 			try {
 				clientes 			= clientesDAO.findAllClientes();
-				electrodomesticos 	= electrodomesticosDAO.findAllElectrodomesticos();
 			} catch ( Exception e) {
 				e.printStackTrace();
 				response.sendError(500);
 				return;
 			}
-				
-				request.setAttribute("clientes", clientes);
-				request.setAttribute("electrodomesticos", electrodomesticos);				
-			
-				request.getRequestDispatcher("/WEB-INF/jsp/vista/listado.jsp").forward(request, response);
+			request.setAttribute("clientes", clientes);			
+			request.getRequestDispatcher("/WEB-INF/jsp/vista/listadocli.jsp").forward(request, response);
+			break;
+		
+		case "listarpro":
+			List<Electrodomestico>  electrodomesticos 	= null;
+			try {
+				electrodomesticos 	= electrodomesticosDAO.findAllElectrodomesticos();
+			} catch(Exception e) {
+				e.printStackTrace();
+				response.sendError(500);
+				return;
+			}
+			request.setAttribute("electrodomesticos", electrodomesticos);
+			request.getRequestDispatcher("/WEB-INF/jsp/vista/listadopro.jsp").forward(request, response);
 			break;
 			
 		case "listarodt":
@@ -70,12 +78,9 @@ public class Controller extends HttpServlet {
 				response.sendError(500);
 				return;
 			}
-			
-			
 			request.setAttribute("odt", odt);	
 			request.getRequestDispatcher("/WEB-INF/jsp/vista/listadoodt.jsp").forward(request, response);
 			break;
-
 		
 		case "formulario":
 			request.getRequestDispatcher("/WEB-INF/jsp/vista/formulario-paso1.jsp").forward(request, response);
@@ -149,7 +154,7 @@ public class Controller extends HttpServlet {
 				
 				// crea una orden de trabajo con el electrodomestico en cuestion, estado fijo y la fecha de creacion
 				String estado = "Pendiente";
-				OrdenDeTrabajo odt = new OrdenDeTrabajo(estado,fecha,fecha,electrodomestico.getId(),electrodomestico.getNombre(),electrodomestico.getCliente_id().getNombre());
+				OrdenDeTrabajo odt = new OrdenDeTrabajo(estado,fecha,fecha,electrodomestico);
 				odtDAO.createOrdenDeTrabajo(odt);
 				
 				

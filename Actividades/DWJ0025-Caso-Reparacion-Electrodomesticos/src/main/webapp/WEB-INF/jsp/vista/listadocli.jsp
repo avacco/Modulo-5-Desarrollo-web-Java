@@ -11,32 +11,28 @@
 <body class="bg-light">
 <%@include file="includes/navbar.jsp" %>
 <div class="my-3 p-3 bg-body rounded shadow-sm">
-	<h1>Ordenes de trabajo</h1>	
+	<h1>Clientes</h1>	
 	<table class="table table-striped">
 		<thead>
 			<tr>
 				<th class="col">ID</th>
-				<th class="col">Objeto</th>
-				<th class="col">Estado</th>
-				<th class="col">Cliente asociado</th>
-				<th class="col">Fecha Solicitud</th>
-				<th class="col">Fecha Ultima Actualizacion</th>
+				<th class="col">Nombre</th>
+				<th class="col">Telefono</th>
+				<th class="col">Direccion</th>
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach var="odt" items="${odt}">
+			<c:forEach var="clientes" items="${clientes}">
 				<tr>
-					<td><c:out value="${odt.id}"></c:out></td>
-					<td><c:out value="${odt.electrodomestico_id.nombre}"></c:out></td>
-					<td><c:out value="${odt.estado}"></c:out></td>
-					<td><c:out value="${odt.electrodomestico_id.cliente_id.nombre}"></c:out></td>
-					<td><c:out value="${odt.fechaSolicitud}"></c:out></td>
-					<td><c:out value="${odt.fechaActualizacionOrden}"></c:out></td>
+					<td><c:out value="${clientes.id}"></c:out></td>
+					<td><c:out value="${clientes.nombre}"></c:out></td>
+					<td><c:out value="${clientes.telefono}"></c:out></td>
+					<td><c:out value="${clientes.direccion}"></c:out></td>
 				</tr>			
 			</c:forEach>
 		</tbody>
 	</table>
-	<a href="${pageContext.request.contextPath}/index.jsp" class="btn btn-primary" role="button" data-bs-toggle="button">Volver</a>
+		<a href="${pageContext.request.contextPath}/index.jsp" class="btn btn-primary" role="button" data-bs-toggle="button">Volver</a>
 </div>		
 	
 		

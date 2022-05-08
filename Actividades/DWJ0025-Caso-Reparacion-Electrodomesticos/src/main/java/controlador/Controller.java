@@ -84,7 +84,42 @@ public class Controller extends HttpServlet {
 		
 		case "formulario":
 			request.getRequestDispatcher("/WEB-INF/jsp/vista/formulario-paso1.jsp").forward(request, response);
-			break;		
+			break;
+			
+		case "editar":
+			// toma el id de la odt a editar
+			int id = Integer.parseInt(request.getParameter("id"));
+			try {
+				// la identifica a traves de un query y la asigna a un objeto odt
+				OrdenDeTrabajo odtEdit = odtDAO.findOrdenDeTrabajoById(id);
+				
+				// envia el objeto odt a la pagina de editar orden, luego redirecciona hacia la misma
+				request.setAttribute("odt", odtEdit);
+				request.getRequestDispatcher("/WEB-INF/jsp/vista/formulario-editar-orden.jsp").forward(request, response);
+			} catch (SQLException | NamingException e) {
+				e.printStackTrace();
+				response.sendError(500);
+				return;
+			}
+			break;
+			
+		case "verODT":
+			// toma el id de la odt a editar
+			id = Integer.parseInt(request.getParameter("id"));
+			try {
+				// la identifica a traves de un query y la asigna a un objeto odt
+				OrdenDeTrabajo odtEdit = odtDAO.findOrdenDeTrabajoById(id);
+				
+				// envia el objeto odt a la pagina de editar orden, luego redirecciona hacia la misma
+				request.setAttribute("odt", odtEdit);
+				request.getRequestDispatcher("/WEB-INF/jsp/vista/odt-solo-lectura.jsp").forward(request, response);
+			} catch (SQLException | NamingException e) {
+				e.printStackTrace();
+				response.sendError(500);
+				return;
+			}
+			break;
+		
 		default:
 			response.sendError(500);
 		}
@@ -193,6 +228,53 @@ public class Controller extends HttpServlet {
 			request.setAttribute("success", 1);
 			request.getRequestDispatcher("index.jsp").forward(request, response);				
 			break;
+			
+		case "finalizarEdit":
+			// toma los id de los objetos asociados a la orden de trabajo
+			int idOdt 				= Integer.parseInt(request.getParameter("idOdt"));
+			idCliente 				= Integer.parseInt(request.getParameter("idCliente"));
+			int idProducto 			= Integer.parseInt(request.getParameter("idElectrodomestico"));
+			
+			// toma el estado de la orden
+			String estadoOrden 		= request.getParameter("estadoOrden");
+			
+			// toma los datos de los objetos asociados
+				// electrodomestico
+
+			nombreProducto 			= request.getParameter("nombreProducto");
+			fallaProducto 			= request.getParameter("fallaProducto");
+			
+				// cliente
+			String nombreCliente 	= request.getParameter("nombreCliente");
+			String telefonoCliente 	= request.getParameter("telefonoCliente");
+			String direccionCliente = request.getParameter("direccionCliente");
+			
+			// con todos los datos recabados, intenta editar el registro correspondiente de cada tabla
+			try {
+				electrodomestico 		= electrodomesticosDAO.findElectrodomesticoById(idProducto);
+				cliente = electrodomestico.getCliente_id();
+				
+				// setea los nuevos datos en el objeto traido
+				electrodomestico.setNombre(nombreProducto);
+				electrodomestico.setFalla(fallaProducto);
+				
+				cliente.setNombre(nombreCliente);
+				cliente.setTelefono(telefonoCliente);
+				cliente.setDireccion(direccionCliente);
+				
+				// envia a editar los objetos ahora con los datos actualizados
+				electrodomesticosDAO.editElectrodomestico(electrodomestico);
+				clientesDAO.editCliente(cliente);
+				
+				// envia el objeto odt con los unicos datos relevantes, pues la fecha de actualizacion se hara en el mismo metodo de editar, y lo demas no se deberia cambiar en ningun caso.
+				odtDAO.editOrdenDeTrabajo(new OrdenDeTrabajo(idOdt,estadoOrden));
+				request.setAttribute("success", 2);
+				request.getRequestDispatcher("index.jsp").forward(request, response);	
+				
+			} catch (SQLException | NamingException e) {
+				e.printStackTrace();
+			}
+			
 			
 		default:
 			response.sendError(500);

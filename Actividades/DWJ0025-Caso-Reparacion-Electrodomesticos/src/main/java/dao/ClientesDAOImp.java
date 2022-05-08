@@ -76,7 +76,17 @@ public class ClientesDAOImp implements ClientesDAO {
 
 	@Override
 	public void editCliente(Cliente cliente) throws SQLException, NamingException {
-		// TODO Auto-generated method stub
+		try(
+				Connection conn = DBUtils.getConexion();
+				PreparedStatement ps = conn.prepareStatement("UPDATE cliente SET nombre = ?, telefono = ?, direccion = ? WHERE id_cliente = ?");
+			) {
+
+				ps.setString(1, cliente.getNombre());
+				ps.setString(2, cliente.getTelefono());
+				ps.setString(3, cliente.getDireccion());
+				ps.setInt(4, cliente.getId());
+				ps.executeUpdate();
+			} 
 		
 	}
 

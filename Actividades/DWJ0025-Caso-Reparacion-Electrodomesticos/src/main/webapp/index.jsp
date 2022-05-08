@@ -7,7 +7,7 @@
 <html lang="es">
   <head>
     <meta charset="utf-8">
-    <title>Index</title>
+    <title>Indice</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/offcanvas-navbar/">
 
@@ -21,6 +21,13 @@
 <%@include file="/WEB-INF/jsp/vista/includes/navbar.jsp" %>
 
 	<!-- alertas  -->
+	<c:if test="${success == 2}">
+	<div class="alert alert-success" role="alert">
+	  Se ha editado con exito la orden de trabajo, su producto y cliente asociados.
+	</div>
+	</c:if>
+
+
 	<c:if test="${success == 1}">
 	<div class="alert alert-success" role="alert">
 	  Se ha añadido la orden de trabajo.
@@ -35,7 +42,7 @@
 
 
   <div class="my-3 p-3 bg-body rounded shadow-sm">
-    <h6 class="border-bottom pb-2 mb-0">Listados</h6>
+    <h4 class="border-bottom pb-2 mb-0">Listados</h4>
     <div class="d-flex text-muted pt-3">
       <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#007bff"/><text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text></svg>
       <p class="pb-3 mb-0 small lh-sm border-bottom">
@@ -59,7 +66,7 @@
   </div>
 
   <div class="my-3 p-3 bg-body rounded shadow-sm">
-    <h6 class="border-bottom pb-2 mb-0">Formulario nueva orden de trabajo</h6>
+    <h4 class="border-bottom pb-2 mb-0">Formulario nueva orden de trabajo</h4>
     <div class="d-flex text-muted pt-3">
       <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#007bff"/><text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text></svg>
 

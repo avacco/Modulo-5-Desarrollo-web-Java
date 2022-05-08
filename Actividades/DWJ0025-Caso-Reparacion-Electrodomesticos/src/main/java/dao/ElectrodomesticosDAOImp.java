@@ -84,7 +84,16 @@ public class ElectrodomesticosDAOImp implements ElectrodomesticosDAO {
 
 	@Override
 	public void editElectrodomestico(Electrodomestico electrodomestico) throws SQLException, NamingException {
-		// TODO Auto-generated method stub
+		try(
+				Connection conn = DBUtils.getConexion();
+				PreparedStatement ps = conn.prepareStatement("UPDATE electrodomestico SET nombre = ?, falla = ? WHERE id_electrodomestico = ?");
+			) {
+
+				ps.setString(1, electrodomestico.getNombre());
+				ps.setString(2, electrodomestico.getFalla());
+				ps.setInt(3, electrodomestico.getId());
+				ps.executeUpdate();
+			} 
 		
 	}
 

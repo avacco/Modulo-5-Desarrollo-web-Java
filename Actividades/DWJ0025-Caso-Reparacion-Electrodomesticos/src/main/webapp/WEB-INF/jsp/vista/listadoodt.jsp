@@ -23,6 +23,7 @@
 				<th class="col">Cliente asociado</th>
 				<th class="col">Fecha Solicitud</th>
 				<th class="col">Fecha Ultima Actualizacion</th>
+				<th class="col">Acciones</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -34,6 +35,10 @@
 					<td><c:out value="${odt.electrodomestico_id.cliente_id.nombre}"></c:out></td>
 					<td><c:out value="${odt.fechaSolicitud}"></c:out></td>
 					<td><c:out value="${odt.fechaActualizacionOrden}"></c:out></td>
+					<td>
+						<a href="Controller?accion=editar&amp;id=${odt.id}">Modificar</a>
+						<a href="Controller?accion=verODT&amp;id=${odt.id}">Ver ODT</a>
+					</td>
 				</tr>			
 			</c:forEach>
 		</tbody>

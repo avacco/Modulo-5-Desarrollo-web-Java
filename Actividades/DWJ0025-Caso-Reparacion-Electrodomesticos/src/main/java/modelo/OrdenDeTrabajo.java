@@ -28,6 +28,11 @@ public class OrdenDeTrabajo {
 		this.fechaActualizacionOrden = fechaActualizacionOrden;
 		this.electrodomestico_id 	 = electrodomestico_id;
 	}
+	
+	public OrdenDeTrabajo(int id, String estado) {
+		this.id 					  = id;
+		this.estado 				  = estado;
+	}
 
 	public int getId() {
 		return id;

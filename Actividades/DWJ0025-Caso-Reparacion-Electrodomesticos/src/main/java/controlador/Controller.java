@@ -170,6 +170,27 @@ public class Controller extends HttpServlet {
 			break;
 			
 		case "finalizar":
+			idCliente = Integer.parseInt(request.getParameter("id"));
+			
+			try {
+				Electrodomestico elec = electrodomesticosDAO.findElectrodomesticoByClienteId(idCliente);
+				if(elec == null) {
+					//elimina el ultimo cliente creado si no hay electrodomesticos asociados
+					Cliente clienteAEliminar = clientesDAO.findLastCreatedCliente();
+					clientesDAO.deleteCliente(clienteAEliminar.getId());
+					
+					// redirecciona junto a una alerta de que se ha cancelado la orden
+					request.setAttribute("success", 0);
+					request.getRequestDispatcher("index.jsp").forward(request, response);
+				}
+
+			} catch (SQLException | NamingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			// redirecciona junto a una alerta de que se ha creado la orden de trabajo
+			request.setAttribute("success", 1);
 			request.getRequestDispatcher("index.jsp").forward(request, response);				
 			break;
 			

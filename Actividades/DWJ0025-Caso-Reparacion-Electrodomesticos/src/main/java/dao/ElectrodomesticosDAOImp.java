@@ -113,6 +113,28 @@ public class ElectrodomesticosDAOImp implements ElectrodomesticosDAO {
 		}
 		return null;
 	}
+
+
+	@Override
+	public Electrodomestico findElectrodomesticoByClienteId(int clienteId) throws SQLException, NamingException {
+		try(
+				Connection conn = DBUtils.getConexion();
+				PreparedStatement ps = conn.prepareStatement("SELECT * FROM Electrodomestico WHERE id_cliente = ?");
+			) {
+			ps.setInt(1, clienteId);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				int id 				= rs.getInt("id_electrodomestico");
+				String nombre 		= rs.getString("Nombre");
+				String falla 		= rs.getString("Falla");
+				int idCliente 		= rs.getInt("id_cliente");
+				Cliente cliente 	= clientesDAO.findClienteById(idCliente);
+				
+				return new Electrodomestico(id,nombre,falla,cliente);
+			}
+			
+		}
+		return null;	}
 	
 
 

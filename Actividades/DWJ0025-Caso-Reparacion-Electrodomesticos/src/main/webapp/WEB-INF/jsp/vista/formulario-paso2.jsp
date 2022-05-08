@@ -18,7 +18,7 @@
 		<div class="col mb-6">
 			<form method="POST" action="Controller?accion=addElectrodomestico">
 			
-			  <input type="hidden" class="form-control" id="id" name="id" value="${cliente.id}">
+			  <input type=hidden class="form-control" id="id" name="id" value="${cliente.id}">
 			  		
 			  <div class="mb-3">
 			    <label class="form-label">Nombre Cliente</label>
@@ -35,10 +35,10 @@
 			  <button type="submit" class="btn btn-primary">Agregar producto</button><br>
 			 </form>
 			  <form method="POST" action="Controller?accion=finalizar">
+			  <input type="hidden" class="form-control" id="id" name="id" value="${cliente.id}">
 			  <button type="submit" class="btn btn-danger">Finalizar</button>
 			  <div class="form-text">Agregue al menos un producto antes de finalizar.</div>
 			  <div class="form-text">Finalizar sin agregar ningun producto cancelará la orden.</div>
-			  <%-- TODO: hacer la amenaza una realidad --%>
 			</form>
 		</div>
 	</div>

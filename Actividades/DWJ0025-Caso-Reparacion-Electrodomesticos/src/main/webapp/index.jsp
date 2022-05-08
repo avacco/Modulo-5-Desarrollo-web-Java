@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
     
 <!doctype html>
@@ -16,9 +17,21 @@
     
   </head>
 <body class="bg-light">
-    
+    <!--  incluye el navbar -->
 <%@include file="/WEB-INF/jsp/vista/includes/navbar.jsp" %>
 
+	<!-- alertas  -->
+	<c:if test="${success == 1}">
+	<div class="alert alert-success" role="alert">
+	  Se ha añadido la orden de trabajo.
+	</div>
+	</c:if>
+	
+	<c:if test="${success == 0}">
+	<div class="alert alert-danger" role="alert">
+	  Se ha cancelado la orden de trabajo.
+	</div>
+	</c:if>
 
 
   <div class="my-3 p-3 bg-body rounded shadow-sm">

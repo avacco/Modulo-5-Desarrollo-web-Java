@@ -82,8 +82,13 @@ public class ClientesDAOImp implements ClientesDAO {
 
 	@Override
 	public void deleteCliente(int clienteId) throws SQLException, NamingException {
-		// TODO Auto-generated method stub
-		
+		try(
+				Connection conn = DBUtils.getConexion();
+				PreparedStatement ps = conn.prepareStatement("DELETE FROM cliente WHERE id_cliente = ?");
+			) {
+				ps.setInt(1, clienteId);
+				ps.executeUpdate();
+			} 
 	}
 
 	@Override

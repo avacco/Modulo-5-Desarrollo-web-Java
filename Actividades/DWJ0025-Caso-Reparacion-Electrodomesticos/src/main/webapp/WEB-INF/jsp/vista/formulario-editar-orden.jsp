@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
@@ -74,7 +74,7 @@
 			  </div>
 			  
 			  <h3>Detalles del cliente</h3>
-			  <div class="form-text">Cambiar los datos del cliente reflejar· el cambio en todas las ordenes de trabajo asociadas al mismo.</div>
+			  <div class="form-text">Cambiar los datos del cliente reflejar√° el cambio en todas las ordenes de trabajo asociadas al mismo.</div>
 			  <div class="mb-3">
 			    <label class="form-label">Nombre del cliente</label>
 			    <input type="text" class="form-control" id="nombreCliente" name="nombreCliente" value="${odt.electrodomestico_id.cliente_id.nombre}">

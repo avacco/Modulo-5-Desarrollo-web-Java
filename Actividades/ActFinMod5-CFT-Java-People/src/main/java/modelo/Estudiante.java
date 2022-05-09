@@ -17,6 +17,24 @@ public class Estudiante {
 		
 	}
 
+	
+
+	public Estudiante(int id, String nombre1, String nombre2, String apellidoPaterno, String apellidoMaterno,
+			String rut, char dv, String genero, String fono, String curso) {
+		this.id = id;
+		this.nombre1 = nombre1;
+		this.nombre2 = nombre2;
+		this.apellidoPaterno = apellidoPaterno;
+		this.apellidoMaterno = apellidoMaterno;
+		this.rut = rut;
+		this.dv = dv;
+		this.genero = genero;
+		this.fono = fono;
+		this.curso = curso;
+	}
+
+
+
 	public int getId() {
 		return id;
 	}

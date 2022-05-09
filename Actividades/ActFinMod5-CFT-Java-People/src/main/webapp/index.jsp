@@ -21,20 +21,20 @@
 	<!-- alertas  -->
 	<c:if test="${success == 2}">
 	<div class="alert alert-success" role="alert">
-	  Se ha editado con exito la orden de trabajo, su producto y cliente asociados.
+	  POR IMPLEMENTAR.
 	</div>
 	</c:if>
 
 
 	<c:if test="${success == 1}">
 	<div class="alert alert-success" role="alert">
-	  Se ha añadido la orden de trabajo.
+	  POR IMPLEMENTAR.
 	</div>
 	</c:if>
 	
 	<c:if test="${success == 0}">
 	<div class="alert alert-danger" role="alert">
-	  Se ha cancelado la orden de trabajo.
+	  POR IMPLEMENTAR.
 	</div>
 	</c:if>
 
@@ -44,7 +44,7 @@
     <div class="d-flex text-muted pt-3">
       <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#007bff"/><text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text></svg>
       <div class="pb-3 mb-0 small lh-sm border-bottom w-100">
-        <a href="Controller?accion=listar"><b>Estudiantes</b></a>
+        <a href="CFTController?accion=listar"><b>Estudiantes</b></a>
       </div>
     </div>
   </div>
@@ -55,7 +55,7 @@
       <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#6f42c1"/><text x="50%" y="50%" fill="#6f42c1" dy=".3em">32x32</text></svg>
       <div class="pb-3 mb-0 small lh-sm border-bottom w-100">
         <div class="d-flex justify-content-between">
-          <a href="Controller?accion=formulario"><b>Registrar nuevo estudiante</b></a>  
+          <a href="CFTController?accion=formulario"><b>Registrar nuevo estudiante</b></a>  
         </div>
       </div>
     </div>

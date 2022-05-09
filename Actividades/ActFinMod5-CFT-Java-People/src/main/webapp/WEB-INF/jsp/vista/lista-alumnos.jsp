@@ -1,9 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"
-    pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<!DOCTYPE html>
 <html lang="es">
   <head>
-    <meta charset="utf-8">
+    <meta charset="ISO-8859-1">
     <title>Lista de alumnos</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/offcanvas-navbar/">
@@ -35,16 +36,17 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach var="clientes" items="${estudiantes}">
+			<c:forEach var="estudiantes" items="${estudiantes}">
 				<tr>
 					<td><c:out value="${estudiantes.id}"></c:out></td>
 					<td><c:out value="${estudiantes.rut}-${estudiantes.dv}"></c:out></td>
 					<td><c:out value="${estudiantes.nombre1} ${estudiantes.nombre2} ${estudiantes.apellidoPaterno} ${estudiantes.apellidoMaterno}"></c:out></td>
+					<td><c:out value="${estudiantes.genero}"></c:out></td>
 					<td><c:out value="${estudiantes.fono}"></c:out></td>
 					<td><c:out value="${estudiantes.curso}"></c:out></td>
 					<td>
-						<a href="Controller?accion=consultar&amp;id=${odt.id}">Consultar</a>
-						<a href="Controller?accion=addNota&amp;id=${odt.id}">Agregar nota</a>
+						<a href="CFTController?accion=consultar&amp;id=${estudiantes.id}">Consultar</a>
+						<a href="CFTController?accion=addNota&amp;id=${estudiantes.id}">Agregar nota</a>
 					</td>
 				</tr>			
 			</c:forEach>

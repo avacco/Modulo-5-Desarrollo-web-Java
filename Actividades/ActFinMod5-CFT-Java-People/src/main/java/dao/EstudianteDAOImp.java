@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -33,9 +34,7 @@ public class EstudianteDAOImp implements EstudianteDAO {
 				String fono 			= rs.getString("fono");
 				String curso			= rs.getString("curso");
 				
-				char dvChar = dv.charAt(0);
-				
-				Estudiante estudiante = new Estudiante(id,nombre1,nombre2,apellidoPaterno,apellidoMaterno,rut,dvChar,genero,fono,curso);
+				Estudiante estudiante = new Estudiante(id,nombre1,nombre2,apellidoPaterno,apellidoMaterno,rut,dv,genero,fono,curso);
 				estudiantes.add(estudiante);
 			}
 			return estudiantes;
@@ -50,7 +49,24 @@ public class EstudianteDAOImp implements EstudianteDAO {
 
 	@Override
 	public void createEstudiante(Estudiante estudiante) throws SQLException, NamingException {
-		// TODO Auto-generated method stub
+		try(
+				Connection conn = DBUtils.getConexion();
+				PreparedStatement ps = conn.prepareStatement("INSERT INTO estudiante(rut, dv, nombre1, nombre2, apellidomaterno, apellidopaterno, genero, fono, curso) VALUES (?,?,?,?,?,?,?,?,?)");
+
+			) {
+			// esto esta dando mas problemas de lo que pensaba, debi dejarlo como string y ya
+			
+			ps.setString(1, estudiante.getRut());
+			ps.setString(2, estudiante.getDv());
+			ps.setString(3, estudiante.getNombre1());
+			ps.setString(4, estudiante.getNombre2());
+			ps.setString(5, estudiante.getApellidoMaterno());
+			ps.setString(6, estudiante.getApellidoPaterno());
+			ps.setString(7, estudiante.getGenero());
+			ps.setString(8, estudiante.getFono());
+			ps.setString(9, estudiante.getCurso());
+			ps.executeUpdate();
+		}
 
 	}
 

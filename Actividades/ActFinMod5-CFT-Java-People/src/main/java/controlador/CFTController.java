@@ -4,7 +4,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import modelo.Asignatura;
 import modelo.Estudiante;
 
 import java.io.IOException;
@@ -54,6 +53,7 @@ public class CFTController extends HttpServlet {
 			break;
 			
 		case "formulario":
+			/* ESTO NO VA AQUI
 			List<Asignatura> asignaturas = null;
 			try {
 				asignaturas = asignaturaDAO.findAllAsignaturas();
@@ -63,6 +63,7 @@ public class CFTController extends HttpServlet {
 				return;
 			}
 			request.setAttribute("asignaturas", asignaturas);
+			*/
 			request.getRequestDispatcher("/WEB-INF/jsp/vista/form-estudiantes.jsp").forward(request, response);
 			break;
 			
@@ -73,7 +74,53 @@ public class CFTController extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+		String accion = request.getParameter("accion");
+		
+		switch(accion) {
+		case "addEstudiante":
+				String nombre1			= request.getParameter("nombre1");
+				String nombre2 			= request.getParameter("nombre2");
+				String apellidoPaterno 	= request.getParameter("apellidoPaterno");
+				String apellidoMaterno 	= request.getParameter("apellidoMaterno");
+				String rut 				= request.getParameter("rut");
+				String dv 				= request.getParameter("dv");
+				String genero 			= request.getParameter("genero");
+				String fono 			= request.getParameter("fono");
+				String curso 			= request.getParameter("curso");
+				
+				// si el usuario no cambio las opciones por default, redirecciona de vuelta y muestra el mensaje de error correspondiente
+				if(genero.equals("none")) {
+					request.setAttribute("codigo", 0);
+					request.getRequestDispatcher("/WEB-INF/jsp/vista/form-estudiantes.jsp").forward(request, response);
+					break;
+				}
+				
+				if(curso.equals("none")) {
+					request.setAttribute("codigo", 1);
+					request.getRequestDispatcher("/WEB-INF/jsp/vista/form-estudiantes.jsp").forward(request, response);
+					break;
+				}
+				
+				// si todo esta en orden, pasa a la creacion del estudiante
+				Estudiante estudiante = new Estudiante(nombre1,nombre2,apellidoPaterno,apellidoMaterno,rut,dv,genero,fono,curso);
+				try {
+					estudianteDAO.createEstudiante(estudiante);
+					request.setAttribute("codigo", 1);
+					request.getRequestDispatcher("index.jsp").forward(request, response);
+					
+				} catch (SQLException | NamingException e) {
+					// ante un error, redirecciona al indice y muestra una alerta
+					request.setAttribute("codigo", 0);
+					request.getRequestDispatcher("index.jsp").forward(request, response);
+					e.printStackTrace();
+				}
+				
+				
+				break;
+			
+		default:
+			response.sendError(500);
+			break;
+		}
 	}
-
 }

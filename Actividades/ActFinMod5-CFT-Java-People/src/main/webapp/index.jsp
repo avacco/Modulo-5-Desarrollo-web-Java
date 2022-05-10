@@ -19,22 +19,22 @@
 <%@include file="/WEB-INF/jsp/vista/includes/navbar.jsp" %>
 
 	<!-- alertas  -->
-	<c:if test="${success == 2}">
+	<c:if test="${codigo == 2}">
 	<div class="alert alert-success" role="alert">
 	  POR IMPLEMENTAR.
 	</div>
 	</c:if>
 
 
-	<c:if test="${success == 1}">
+	<c:if test="${codigo == 1}">
 	<div class="alert alert-success" role="alert">
-	  POR IMPLEMENTAR.
+	  Se ha añadido el estudiante al registro.
 	</div>
 	</c:if>
 	
-	<c:if test="${success == 0}">
+	<c:if test="${codigo == 0}">
 	<div class="alert alert-danger" role="alert">
-	  POR IMPLEMENTAR.
+	  Hubo un error al intentar añadir el estudiante al registro. Intentelo de nuevo.
 	</div>
 	</c:if>
 

@@ -8,7 +8,7 @@ public class Estudiante {
 	private String apellidoPaterno;
 	private String apellidoMaterno;
 	private String rut;
-	private char dv;
+	private String dv;
 	private String genero;
 	private String fono;
 	private String curso;
@@ -20,8 +20,21 @@ public class Estudiante {
 	
 
 	public Estudiante(int id, String nombre1, String nombre2, String apellidoPaterno, String apellidoMaterno,
-			String rut, char dv, String genero, String fono, String curso) {
+			String rut, String dv, String genero, String fono, String curso) {
 		this.id = id;
+		this.nombre1 = nombre1;
+		this.nombre2 = nombre2;
+		this.apellidoPaterno = apellidoPaterno;
+		this.apellidoMaterno = apellidoMaterno;
+		this.rut = rut;
+		this.dv = dv;
+		this.genero = genero;
+		this.fono = fono;
+		this.curso = curso;
+	}
+	
+	public Estudiante(String nombre1, String nombre2, String apellidoPaterno, String apellidoMaterno,
+			String rut, String dv, String genero, String fono, String curso) {
 		this.nombre1 = nombre1;
 		this.nombre2 = nombre2;
 		this.apellidoPaterno = apellidoPaterno;
@@ -83,11 +96,11 @@ public class Estudiante {
 		this.rut = rut;
 	}
 
-	public char getDv() {
+	public String getDv() {
 		return dv;
 	}
 
-	public void setDv(char dv) {
+	public void setDv(String dv) {
 		this.dv = dv;
 	}
 

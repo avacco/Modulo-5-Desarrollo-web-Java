@@ -13,13 +13,13 @@
 <%@include file="includes/navbar.jsp" %>
 
 <!-- alertas  -->
-	<c:if test="${success == 0}">
+	<c:if test="${codigo == 0}">
 	<div class="alert alert-danger" role="alert">
 	  Seleccione su genero.
 	</div>
 	</c:if>
 	
-	<c:if test="${success == 0}">
+	<c:if test="${codigo == 1}">
 	<div class="alert alert-danger" role="alert">
 	  Elija el curso.
 	</div>
@@ -31,7 +31,7 @@
 	
 		<h2>Datos del estudiante</h2>
 		<div class="col-mb-6">
-			<form method="POST" action="Controller?accion=addEstudiante">
+			<form method="POST" action="CFTController?accion=addEstudiante">
 			  <div class="mb-3">
 			    <label class="form-label">Primer Nombre</label>
 			    <input required type="text" class="form-control" id="nombre1" name="nombre1">
@@ -49,8 +49,16 @@
 			    <input required type="text" class="form-control" id="apellidoMaterno" name="apellidoMaterno">
 			  </div>
 			  <div class="mb-3">
+			    <label class="form-label">RUT</label>
+			    <input required type="text" class="form-control" id="rut" name="rut">
+			  </div>
+			  <div class="col-sm-1 mb-3">
+			    <label class="form-label">Digito verificador</label>
+			    <input required type="text" class="form-control" id="dv" name="dv">
+			  </div>
+			  <div class="mb-3">
 			    <label class="form-label">Genero</label>
-			    <select class="form-select" name="curso" id="curso">
+			    <select class="form-select" name="genero" id="genero">
 			    	<option selected="selected" value="none">Seleccione su genero</option>
 			    	<option value="Masculino">Masculino</option>
 			    	<option value="Femenino">Femenino</option>
@@ -66,9 +74,9 @@
 			    <label class="form-label">Curso</label>
 			    <select class="form-select" name="curso" id="curso">
 			    	<option selected="selected" value="none">Elija un curso</option>
-					<c:forEach var="asignaturas" items="${asignaturas}">					
-						<option value="${asignaturas.id_asignatura}">${asignaturas.nombre}</option>						
-					</c:forEach>
+			    	<option value="Curso 1">Curso 1</option>
+			    	<option value="Curso 2">Curso 2</option>
+			    	<option value="Curso 3">Curso 3</option>
 			    </select>
 			  </div>
 			  <button type="submit" class="btn btn-success">Registrar</button> 
@@ -79,3 +87,14 @@
 </div>
 </body>
 </html>
+			  <%-- ESTO NO VA AQUI 
+			  <div class="mb-3">
+			    <label class="form-label">Asignatura</label>
+			    <select class="form-select" name="asignatura" id="asignatura">
+			    	<option selected="selected" value="none">Elija una asignatura</option>
+					<c:forEach var="asignaturas" items="${asignaturas}">					
+						<option value="${asignaturas.id_asignatura}">${asignaturas.nombre}</option>						
+					</c:forEach>
+			    </select>
+			  </div>
+			--%> 

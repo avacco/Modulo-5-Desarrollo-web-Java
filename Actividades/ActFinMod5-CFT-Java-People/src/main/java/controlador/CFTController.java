@@ -7,9 +7,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import modelo.Asignatura;
 import modelo.Calificacion;
 import modelo.Estudiante;
+import modelo.Promedio;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.naming.NamingException;
@@ -83,13 +85,16 @@ public class CFTController extends HttpServlet {
 		case "consultar":
 			idEstudiante = Integer.parseInt(request.getParameter("id"));
 			List<Calificacion> calificaciones = null;
+			List<Promedio> promedios = null;
 			try {
 				calificaciones = calificacionDAO.findAllCalificacionesById(idEstudiante);
+				promedios = calificacionDAO.findAverageCalificacionById(idEstudiante);
 			} catch (SQLException | NamingException e) {
 				e.printStackTrace();
 				response.sendError(500);
 				return;
 			}
+			request.setAttribute("promedios", promedios);
 			request.setAttribute("calificaciones", calificaciones);
 			request.getRequestDispatcher("/WEB-INF/jsp/vista/lista-calificaciones.jsp").forward(request, response);
 			break;

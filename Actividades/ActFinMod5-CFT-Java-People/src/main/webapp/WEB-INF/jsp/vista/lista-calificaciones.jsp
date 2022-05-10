@@ -50,7 +50,29 @@
 			</c:forEach>
 		</tbody>
 	</table>
-</div>		
+</div>
+
+<div class="my-3 p-3 bg-body rounded shadow-sm">
+	<h1>Promedios</h1>	
+	<table class="table table-striped">
+		<thead>
+			<tr>				
+				<th class="col">Asignatura</th>
+				<th class="col">Promedio</th>
+				
+			</tr>
+		</thead>
+		<tbody>
+			<c:forEach var="promedios" items="${promedios}">
+				<tr>
+					<td><c:out value="${promedios.asignatura.nombre}"></c:out></td>
+					<td><c:out value="${promedios.promedio} "></c:out></td>
+				</tr>			
+			</c:forEach>
+		</tbody>
+	</table>
+</div>
+		
 <a href="CFTController?accion=listar" class="btn btn-primary" role="button" >Volver</a>
 	
 	<!-- Llama las funciones de sort de DataTable -->

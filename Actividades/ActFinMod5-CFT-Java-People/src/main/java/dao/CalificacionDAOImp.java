@@ -12,6 +12,7 @@ import javax.naming.NamingException;
 import modelo.Asignatura;
 import modelo.Calificacion;
 import modelo.Estudiante;
+import modelo.Promedio;
 
 public class CalificacionDAOImp implements CalificacionDAO {
 	
@@ -136,6 +137,32 @@ public class CalificacionDAOImp implements CalificacionDAO {
 			}			
 		}
 		return null;
+	}
+
+	@Override
+	public List<Promedio> findAverageCalificacionById(int estudianteId) throws SQLException, NamingException {
+		try(
+				Connection conn = DBUtils.getConexion();
+				PreparedStatement ps = conn.prepareStatement("SELECT id_asignatura, id_estudiante, AVG(nota) FROM calificacion WHERE id_estudiante = ? GROUP BY id_asignatura, id_estudiante");
+			) {
+			ps.setInt(1, estudianteId);
+			ResultSet rs = ps.executeQuery();
+			List<Promedio> promedios = new ArrayList<>(); 
+			while(rs.next()) {
+				float average 					= rs.getFloat("avg");
+				int id_asignatura 				= rs.getInt("id_asignatura");
+				int id_estudiante 				= rs.getInt("id_estudiante");
+				
+				Estudiante estudiante = estudianteDAO.findEstudianteById(id_estudiante);
+				Asignatura asignatura = asignaturaDAO.findAsignaturaById(id_asignatura);
+				
+				Promedio promedio = new Promedio(average,asignatura,estudiante);
+				
+				promedios.add(promedio); 
+				
+			}	
+			return promedios;
+		}
 	}
 
 }

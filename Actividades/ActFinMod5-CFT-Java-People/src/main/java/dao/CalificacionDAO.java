@@ -6,6 +6,7 @@ import java.util.List;
 import javax.naming.NamingException;
 
 import modelo.Calificacion;
+import modelo.Promedio;
 
 public interface CalificacionDAO {
 
@@ -16,5 +17,6 @@ public interface CalificacionDAO {
 	public void editCalificacion(Calificacion calificacion)									throws SQLException, NamingException;
 	public void deleteCalificacion(int calificacionId)										throws SQLException, NamingException;
 	public Calificacion findLastCreatedCalificacion()										throws SQLException, NamingException;
+	public List<Promedio> findAverageCalificacionById(int estudianteId)						throws SQLException, NamingException;
 	
 }

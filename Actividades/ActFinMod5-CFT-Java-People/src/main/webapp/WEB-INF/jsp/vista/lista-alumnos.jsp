@@ -46,7 +46,7 @@
 					<td><c:out value="${estudiantes.curso}"></c:out></td>
 					<td>
 						<a href="CFTController?accion=consultar&amp;id=${estudiantes.id}">Consultar</a>
-						<a href="CFTController?accion=addNota&amp;id=${estudiantes.id}">Agregar nota</a>
+						<a href="CFTController?accion=formNota&amp;id=${estudiantes.id}">Agregar nota</a>
 					</td>
 				</tr>			
 			</c:forEach>

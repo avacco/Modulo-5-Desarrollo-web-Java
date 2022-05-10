@@ -4,18 +4,18 @@ public class Calificacion {
 	
 	private int numeroEvaluacion;
 	private float nota;
-	private Estudiante estudiante;
-	private Calificacion calificacion;
+	private int id_estudiante;
+	private int id_asignatura;
 	
 	public Calificacion() {
 		
 	}
 	
-	public Calificacion(int numeroEvaluacion, float nota, Estudiante estudiante, Calificacion calificacion) {
+	public Calificacion(int numeroEvaluacion, float nota, int id_estudiante, int id_asignatura) {
 		this.numeroEvaluacion = numeroEvaluacion;
 		this.nota = nota;
-		this.estudiante = estudiante;
-		this.calificacion = calificacion;
+		this.id_estudiante = id_estudiante;
+		this.id_asignatura = id_asignatura;
 	}
 
 	public int getNumeroEvaluacion() {
@@ -34,20 +34,20 @@ public class Calificacion {
 		this.nota = nota;
 	}
 
-	public Estudiante getEstudiante() {
-		return estudiante;
+	public int getId_estudiante() {
+		return id_estudiante;
 	}
 
-	public void setEstudiante(Estudiante estudiante) {
-		this.estudiante = estudiante;
+	public void setId_estudiante(int id_estudiante) {
+		this.id_estudiante = id_estudiante;
 	}
 
-	public Calificacion getCalificacion() {
-		return calificacion;
+	public int getId_asignatura() {
+		return id_asignatura;
 	}
 
-	public void setCalificacion(Calificacion calificacion) {
-		this.calificacion = calificacion;
+	public void setId_asignatura(int id_asignatura) {
+		this.id_asignatura= id_asignatura;
 	}
 	
 	

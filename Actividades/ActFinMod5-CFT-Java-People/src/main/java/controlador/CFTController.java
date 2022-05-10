@@ -4,6 +4,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import modelo.Asignatura;
+import modelo.Calificacion;
 import modelo.Estudiante;
 
 import java.io.IOException;
@@ -14,6 +16,8 @@ import javax.naming.NamingException;
 
 import dao.AsignaturaDAO;
 import dao.AsignaturaDAOImp;
+import dao.CalificacionDAO;
+import dao.CalificacionDAOImp;
 import dao.EstudianteDAO;
 import dao.EstudianteDAOImp;
 
@@ -22,12 +26,14 @@ public class CFTController extends HttpServlet {
        
 	private EstudianteDAO estudianteDAO;
 	private AsignaturaDAO asignaturaDAO;
+	private CalificacionDAO calificacionDAO;
 	
 	@Override
 	public void init() throws ServletException{
 		super.init();
 		this.estudianteDAO = new EstudianteDAOImp();
 		this.asignaturaDAO = new AsignaturaDAOImp();
+		this.calificacionDAO = new CalificacionDAOImp();
 		
 	}
 	
@@ -53,9 +59,16 @@ public class CFTController extends HttpServlet {
 			break;
 			
 		case "formulario":
-			/* ESTO NO VA AQUI
+			request.getRequestDispatcher("/WEB-INF/jsp/vista/form-estudiantes.jsp").forward(request, response);
+			break;
+			
+		case "formNota":
+			int idEstudiante = Integer.parseInt(request.getParameter("id"));
+			
+			Estudiante estudiante = null;
 			List<Asignatura> asignaturas = null;
 			try {
+				estudiante = estudianteDAO.findEstudianteById(idEstudiante);
 				asignaturas = asignaturaDAO.findAllAsignaturas();
 			} catch (SQLException | NamingException e) {
 				e.printStackTrace();
@@ -63,16 +76,16 @@ public class CFTController extends HttpServlet {
 				return;
 			}
 			request.setAttribute("asignaturas", asignaturas);
-			*/
-			request.getRequestDispatcher("/WEB-INF/jsp/vista/form-estudiantes.jsp").forward(request, response);
+			request.setAttribute("estudiante", estudiante);
+			request.getRequestDispatcher("/WEB-INF/jsp/vista/form-calificaciones.jsp").forward(request, response);
 			break;
-			
 		default:
 			response.sendError(500);
 			break;
 		}
 	}
 
+	@SuppressWarnings("unused")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String accion = request.getParameter("accion");
 		
@@ -101,7 +114,7 @@ public class CFTController extends HttpServlet {
 					break;
 				}
 				
-				// si todo esta en orden, pasa a la creacion del estudiante
+				// si todo esta en orden, pasa a la creacion del estudiante, cuando lo haya hecho, redirecciona al indice con un mensaje de exito
 				Estudiante estudiante = new Estudiante(nombre1,nombre2,apellidoPaterno,apellidoMaterno,rut,dv,genero,fono,curso);
 				try {
 					estudianteDAO.createEstudiante(estudiante);
@@ -114,13 +127,56 @@ public class CFTController extends HttpServlet {
 					request.getRequestDispatcher("index.jsp").forward(request, response);
 					e.printStackTrace();
 				}
-				
-				
 				break;
+				
+		case "addNota":
+				int idEstudiante			= Integer.parseInt(request.getParameter("idEstudiante")); 
+				int idAsignatura			= Integer.parseInt(request.getParameter("asignatura"));
+				float nota					= Float.parseFloat(request.getParameter("nota"));
+				
+				// prepara objeto calificacion para asignacion o creacion de instancia
+				Calificacion calificacion = null;
+				
+				// utiliza los id de estudiante y asignatura para hacer un query
+				// buscará si hay alguna calificacion registrada con los id de estudiante y asignatura enviados
+				// si los hay, tomará el primero de la lista, ordenado por "numero evaluacion" de forma descendiente y lo retornara en forma de objeto Calificacion
+				try {
+					 calificacion = calificacionDAO.findCalificacionById(idAsignatura, idEstudiante);
+
+				} catch (SQLException | NamingException e) {
+					e.printStackTrace();
+					response.sendError(500);
+					return;
+				}
+				
+				// si no encuentra ningun registro con los datos proporcionados, crea uno nuevo con el "numeroEvaluacion" en 0
+				if (calificacion == null) {
+					calificacion = new Calificacion(0,nota,idEstudiante,idAsignatura);
+				}
+				
+				// reemplaza la nota del registro encontrado con la nota impuesta por el usuario
+				 calificacion.setNota(nota);
+				
+				// independiente de si ha encontrado un registro o no, ya con el objeto calificacion creado, le suma 1 a "numeroEvaluacion"
+				// una suerte de autoincremental que depende de que dos campos ID sean iguales para hacer el incremento
+				calificacion.setNumeroEvaluacion(calificacion.getNumeroEvaluacion()+1);
+				
+				// terminado todo este proceso, envia el objeto para ser registrado en la base de datos
+				try {
+					calificacionDAO.createCalificacion(calificacion);
+					request.setAttribute("codigo", 2);
+					request.setAttribute("nota", nota);
+					request.getRequestDispatcher("index.jsp").forward(request, response);
+				} catch (SQLException | NamingException e) {
+					e.printStackTrace();
+					response.sendError(500);
+					return;
+				}
+					break;
 			
 		default:
-			response.sendError(500);
-			break;
+				response.sendError(500);
+				break;
 		}
 	}
 }

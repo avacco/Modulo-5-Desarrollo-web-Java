@@ -21,7 +21,7 @@
 	<!-- alertas  -->
 	<c:if test="${codigo == 2}">
 	<div class="alert alert-success" role="alert">
-	  POR IMPLEMENTAR.
+	  Se ha añadido un ${nota} a la asignatura.
 	</div>
 	</c:if>
 

@@ -17,25 +17,25 @@
 	<h1>Calificaciones</h1>
 	<div class="container">
 	
-		<h2>Añadir calificaciones</h2>
+		<h2>Agregar calificaciones</h2>
 		<div class="col-mb-6">
-			<form method="POST" action="Controller?accion=addCliente">
+			<form method="POST" action="CFTController?accion=addNota">
 			  <div class="mb-3">
 			    <label class="form-label">Estudiante</label>
-			    <input disabled type="text" class="form-control" id="nombre" name="nombre" value="${estudiante.nombre}">
+			    <input type="hidden" name="idEstudiante" value="${estudiante.id}">
+			    <input disabled type="text" class="form-control" id="nombre" name="nombre" value="${estudiante.nombre1} ${estudiante.apellidoPaterno}">
 			  </div>
 			  <div class="mb-3">
 			    <label class="form-label">Curso</label>
-			    <input disabled type="text" class="form-control" id="curso" name="curso" value="${estudiante.nombre}">
+			    <input disabled type="text" class="form-control" id="curso" name="curso" value="${estudiante.curso}">
 			  </div>
 			  <div class="mb-3">
 			    <label class="form-label">Asignatura</label>
 			    <select class="form-select" name="asignatura" id="asignatura">
-			    	<option selected="selected" value="none">Seleccione asignatura</option>
-			    	<option value="Asig1">Asig1</option>
-			    	<option value="Asig2">Asig2</option>
-			    	<option value="Asig3">Asig3</option>
-			    	<option value="Asig4">Asig4</option>
+			    	<option selected="selected" value="none">Elija una asignatura</option>
+					<c:forEach var="asignaturas" items="${asignaturas}">					
+						<option value="${asignaturas.id_asignatura}">${asignaturas.nombre}</option>						
+					</c:forEach>
 			    </select>
 			  </div>
 			  <div class="col-sm-1 mb-3">

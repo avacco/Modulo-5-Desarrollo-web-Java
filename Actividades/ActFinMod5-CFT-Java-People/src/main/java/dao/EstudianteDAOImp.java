@@ -43,7 +43,27 @@ public class EstudianteDAOImp implements EstudianteDAO {
 
 	@Override
 	public Estudiante findEstudianteById(int estudianteId) throws SQLException, NamingException {
-		// TODO Auto-generated method stub
+		try(
+				Connection conn = DBUtils.getConexion();
+				PreparedStatement ps = conn.prepareStatement("SELECT * FROM estudiante WHERE id_estudiante = ?");
+			) {
+			ps.setInt(1, estudianteId);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				int id 					= rs.getInt("id_estudiante");
+				String nombre1 			= rs.getString("nombre1");
+				String nombre2 			= rs.getString("nombre2");
+				String apellidoPaterno 	= rs.getString("apellidopaterno");
+				String apellidoMaterno 	= rs.getString("apellidomaterno");
+				String rut				= rs.getString("rut");
+				String dv 				= rs.getString("dv");
+				String genero			= rs.getString("genero");
+				String fono 			= rs.getString("fono");
+				String curso			= rs.getString("curso");
+				
+				return new Estudiante(id,nombre1,nombre2,apellidoPaterno,apellidoMaterno,rut,dv,genero,fono,curso);		
+			}
+		}
 		return null;
 	}
 

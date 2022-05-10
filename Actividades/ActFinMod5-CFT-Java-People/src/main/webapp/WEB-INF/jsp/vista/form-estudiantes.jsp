@@ -87,14 +87,3 @@
 </div>
 </body>
 </html>
-			  <%-- ESTO NO VA AQUI 
-			  <div class="mb-3">
-			    <label class="form-label">Asignatura</label>
-			    <select class="form-select" name="asignatura" id="asignatura">
-			    	<option selected="selected" value="none">Elija una asignatura</option>
-					<c:forEach var="asignaturas" items="${asignaturas}">					
-						<option value="${asignaturas.id_asignatura}">${asignaturas.nombre}</option>						
-					</c:forEach>
-			    </select>
-			  </div>
-			--%> 

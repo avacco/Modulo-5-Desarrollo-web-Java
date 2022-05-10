@@ -7,13 +7,14 @@ CREATE TABLE asignatura (
 ALTER TABLE asignatura ADD CONSTRAINT asignatura_pk PRIMARY KEY ( id_asignatura );
 
 CREATE TABLE calificacion (
+    id_calificacion             SERIAL NOT NULL,
     numeroevaluacion           INTEGER NOT NULL,
     nota                       REAL NOT NULL,
     id_estudiante              INTEGER NOT NULL,
     id_asignatura              INTEGER NOT NULL
 );
 
-ALTER TABLE calificacion ADD CONSTRAINT calificacion_pk PRIMARY KEY ( nota );
+ALTER TABLE calificacion ADD CONSTRAINT calificacion_pk PRIMARY KEY ( id_calificacion );
 
 CREATE TABLE estudiante (
     id_estudiante     SERIAL NOT NULL,

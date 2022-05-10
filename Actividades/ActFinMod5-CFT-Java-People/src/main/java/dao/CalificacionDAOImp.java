@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +34,7 @@ public class CalificacionDAOImp implements CalificacionDAO {
 			ResultSet rs = ps.executeQuery();
 			List<Calificacion> calificaciones = new ArrayList<>();
 			while(rs.next()) {
+				int id					= rs.getInt("id_calificacion");
 				int numeroEvaluacion 	= rs.getInt("numeroEvaluacion");
 				float nota 				= rs.getFloat("nota");
 				int id_estudiante	 	= rs.getInt("id_estudiante");
@@ -43,7 +43,7 @@ public class CalificacionDAOImp implements CalificacionDAO {
 				Estudiante estudiante = estudianteDAO.findEstudianteById(id_estudiante);
 				Asignatura asignatura = asignaturaDAO.findAsignaturaById(id_asignatura);
 				
-				Calificacion calificacion = new Calificacion(numeroEvaluacion,nota,estudiante,asignatura);
+				Calificacion calificacion = new Calificacion(id,numeroEvaluacion,nota,estudiante,asignatura);
 				calificaciones.add(calificacion);
 			}
 			return calificaciones;
@@ -51,7 +51,7 @@ public class CalificacionDAOImp implements CalificacionDAO {
 	}
 
 	@Override
-	public Calificacion findCalificacionById(int asignaturaId,int estudianteId) throws SQLException, NamingException {
+	public Calificacion findCalificacionByForeignIds(int asignaturaId,int estudianteId) throws SQLException, NamingException {
 		try(
 				Connection conn = DBUtils.getConexion();
 				PreparedStatement ps = conn.prepareStatement("SELECT * FROM calificacion WHERE id_asignatura = ? AND id_estudiante = ? ORDER BY numeroevaluacion DESC LIMIT 1");
@@ -88,7 +88,14 @@ public class CalificacionDAOImp implements CalificacionDAO {
 
 	@Override
 	public void editCalificacion(Calificacion calificacion) throws SQLException, NamingException {
-		// TODO Auto-generated method stub
+		try(
+				Connection conn = DBUtils.getConexion();
+				PreparedStatement ps = conn.prepareStatement("UPDATE calificacion SET nota = ? WHERE id_calificacion = ?");
+			) {
+			ps.setFloat(1, calificacion.getNota());
+			ps.setInt(2, calificacion.getId_calificacion());
+			ps.executeUpdate();
+		}
 
 	}
 
@@ -101,6 +108,33 @@ public class CalificacionDAOImp implements CalificacionDAO {
 	@Override
 	public Calificacion findLastCreatedCalificacion() throws SQLException, NamingException {
 		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Calificacion findCalificacionById(int calificacionId) throws SQLException, NamingException {
+		try(
+				Connection conn = DBUtils.getConexion();
+				PreparedStatement ps = conn.prepareStatement("SELECT * FROM calificacion WHERE id_calificacion = ?");
+			) {
+			ps.setInt(1, calificacionId);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				int id					= rs.getInt("id_calificacion");
+				int numeroEvaluacion 	= rs.getInt("numeroEvaluacion");
+				float nota 				= rs.getFloat("nota");
+				int id_estudiante	 	= rs.getInt("id_estudiante");
+				int id_asignatura 		= rs.getInt("id_asignatura");
+				
+				Estudiante estudiante = estudianteDAO.findEstudianteById(id_estudiante);
+				Asignatura asignatura = asignaturaDAO.findAsignaturaById(id_asignatura);
+				
+				return new Calificacion(id,numeroEvaluacion,nota,estudiante,asignatura);
+				
+				
+				
+			}			
+		}
 		return null;
 	}
 

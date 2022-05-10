@@ -2,6 +2,7 @@ package modelo;
 
 public class Calificacion {
 	
+	private int id_calificacion;
 	private int numeroEvaluacion;
 	private float nota;
 	private int id_estudiante;
@@ -20,7 +21,8 @@ public class Calificacion {
 		this.id_asignatura = id_asignatura;
 	}
 	
-	public Calificacion(int numeroEvaluacion, float nota, Estudiante estudiante, Asignatura asignatura) {
+	public Calificacion(int id_calificacion, int numeroEvaluacion, float nota, Estudiante estudiante, Asignatura asignatura) {
+		this.id_calificacion = id_calificacion;
 		this.numeroEvaluacion = numeroEvaluacion;
 		this.nota = nota;
 		this.estudiante = estudiante;
@@ -73,6 +75,14 @@ public class Calificacion {
 
 	public void setEstudiante(Estudiante estudiante) {
 		this.estudiante = estudiante;
+	}
+
+	public int getId_calificacion() {
+		return id_calificacion;
+	}
+
+	public void setId_calificacion(int id_calificacion) {
+		this.id_calificacion = id_calificacion;
 	}
 	
 	

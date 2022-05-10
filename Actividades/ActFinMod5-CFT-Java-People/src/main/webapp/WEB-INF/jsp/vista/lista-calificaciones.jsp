@@ -25,26 +25,33 @@
 	<h1>Listado de Calificaciones</h1>	
 	<table id="sortTable" class="table table-striped">
 		<thead>
-			<tr>
+			<tr>				
+				<th class="col">ID</th>
 				<th class="col">Nombre</th>
 				<th class="col">Asignatura</th>
 				<th class="col">Nota</th>
 				<th class="col">Numero de evaluacion</th>
+				<th class="col">Acciones</th>
+				
 			</tr>
 		</thead>
 		<tbody>
 			<c:forEach var="calificaciones" items="${calificaciones}">
 				<tr>
+					<td><c:out value="${calificaciones.id_calificacion}"></c:out></td>
 					<td><c:out value="${calificaciones.estudiante.nombre1} ${calificaciones.estudiante.nombre2} ${calificaciones.estudiante.apellidoPaterno} ${calificaciones.estudiante.apellidoMaterno}"></c:out></td>
 					<td><c:out value="${calificaciones.asignatura.nombre}"></c:out></td>
 					<td><c:out value="${calificaciones.nota}"></c:out></td>
 					<td><c:out value="${calificaciones.numeroEvaluacion}"></c:out></td>
+					<td>
+						<a href="CFTController?accion=prepareEditNota&amp;idNota=${calificaciones.id_calificacion}">Modificar</a>
+					</td>
 				</tr>			
 			</c:forEach>
 		</tbody>
 	</table>
 </div>		
-<a href="${pageContext.request.contextPath}/index.jsp" class="btn btn-primary" role="button" >Volver</a>
+<a href="CFTController?accion=listar" class="btn btn-primary" role="button" >Volver</a>
 	
 	<!-- Llama las funciones de sort de DataTable -->
 	<%@ include file="includes/tablesorttrad.jsp" %>

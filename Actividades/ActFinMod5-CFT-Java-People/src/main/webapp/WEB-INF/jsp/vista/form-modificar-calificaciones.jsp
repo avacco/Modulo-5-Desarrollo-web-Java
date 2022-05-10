@@ -20,31 +20,27 @@
 	
 		<h2>Añadir calificaciones</h2>
 		<div class="col-mb-6">
-			<form method="POST" action="Controller?accion=addCliente">
+			<form method="POST" action="CFTController?accion=editNota">
 			  <div class="mb-3">
 			    <label class="form-label">Estudiante</label>
-			    <input disabled type="text" class="form-control" id="nombre" name="nombre" value="${estudiante.nombre}">
+			    <input disabled type="text" class="form-control" id="nombre" name="nombre" value="${calificacion.estudiante.nombre1}">
 			  </div>
 			  <div class="mb-3">
 			    <label class="form-label">Curso</label>
-			    <input disabled type="text" class="form-control" id="curso" name="curso" value="${estudiante.nombre}">
+			    <input disabled type="text" class="form-control" id="curso" name="curso" value="${calificacion.estudiante.curso}">
 			  </div>
 			  <div class="mb-3">
 			    <label class="form-label">Asignatura</label>
-			    <select disabled class="form-select" name="asignatura" id="asignatura">
-			    	<option selected="selected" value="none">Seleccione asignatura</option>
-			    	<option value="Asig1">Asig1</option>
-			    	<option value="Asig2">Asig2</option>
-			    	<option value="Asig3">Asig3</option>
-			    	<option value="Asig4">Asig4</option>
-			    </select>
+			    <input disabled type="text" class="form-control" name="asignatura" id="asignatura" value="${calificacion.asignatura.nombre}">
 			  </div>
 			  <div class="col-sm-1 mb-3">
 			    <label class="form-label">Nota</label>
-			    <input type="text" class="form-control" id="nota" name="nota" placeholder="7,0">
+			    <input type="text" class="form-control" id="nota" name="nota" value="${calificacion.nota}">
 			  </div>
-			  <button type="submit" class="btn btn-success">Registrar</button> 
-			  <a href="${pageContext.request.contextPath}/index.jsp" class="btn btn-primary" role="button" data-bs-toggle="button">Volver</a>
+			  <input type="hidden" class="form-control" id="idNota" name="idNota" value="${calificacion.id_calificacion}">
+			  
+			  <button type="submit" class="btn btn-success">Confirmar</button> 
+			  <a href="${pageContext.request.contextPath}/index.jsp" class="btn btn-primary" role="button" data-bs-toggle="button">Cancelar</a>
 			</form>
 
 		</div>

@@ -19,12 +19,17 @@
 <%@include file="/WEB-INF/jsp/vista/includes/navbar.jsp" %>
 
 	<!-- alertas  -->
+	<c:if test="${codigo == 3}">
+	<div class="alert alert-success" role="alert">
+	  Se ha modificado con exito la nota.
+	</div>
+	</c:if>
+	
 	<c:if test="${codigo == 2}">
 	<div class="alert alert-success" role="alert">
 	  Se ha añadido un ${nota} a la asignatura.
 	</div>
 	</c:if>
-
 
 	<c:if test="${codigo == 1}">
 	<div class="alert alert-success" role="alert">

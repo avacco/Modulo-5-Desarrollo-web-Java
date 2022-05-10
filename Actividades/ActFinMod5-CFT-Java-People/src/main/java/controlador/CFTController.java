@@ -94,6 +94,23 @@ public class CFTController extends HttpServlet {
 			request.getRequestDispatcher("/WEB-INF/jsp/vista/lista-calificaciones.jsp").forward(request, response);
 			break;
 			
+		case "prepareEditNota":
+			
+			// toma el id de la calificacion a editar
+			int idNota = Integer.parseInt(request.getParameter("idNota"));
+			Calificacion calificacion = null;
+			try {
+				// busca la calificacion a editar segun su id
+				calificacion = calificacionDAO.findCalificacionById(idNota);
+			} catch (SQLException | NamingException e) {
+				e.printStackTrace();
+				response.sendError(500);
+				return;
+			}	
+			request.setAttribute("calificacion", calificacion);
+			request.getRequestDispatcher("/WEB-INF/jsp/vista/form-modificar-calificaciones.jsp").forward(request, response);
+			break;
+			
 		default:
 			response.sendError(500);
 			break;
@@ -155,7 +172,7 @@ public class CFTController extends HttpServlet {
 				// buscará si hay alguna calificacion registrada con los id de estudiante y asignatura enviados
 				// si los hay, tomará el primero de la lista, ordenado por "numero evaluacion" de forma descendiente y lo retornara en forma de objeto Calificacion
 				try {
-					 calificacion = calificacionDAO.findCalificacionById(idAsignatura, idEstudiante);
+					 calificacion = calificacionDAO.findCalificacionByForeignIds(idAsignatura, idEstudiante);
 
 				} catch (SQLException | NamingException e) {
 					e.printStackTrace();
@@ -187,6 +204,33 @@ public class CFTController extends HttpServlet {
 					return;
 				}
 					break;
+					
+		case "editNota":
+				// toma la id de la calificacion a editar y la nueva calificacion que se le pondra
+				int idNota 		= Integer.parseInt(request.getParameter("idNota"));
+				nota			= Float.parseFloat(request.getParameter("nota"));
+				
+				try {
+					// busca la calificacion por id proporcionado
+					calificacion = calificacionDAO.findCalificacionById(idNota);
+					
+					// setea la nueva nota sobre la calificacion encontrada
+					calificacion.setNota(nota);
+					
+					// manda el query de edicion junto a la calificacion con la nota asignada
+					calificacionDAO.editCalificacion(calificacion);
+					request.setAttribute("codigo", 3);
+					request.getRequestDispatcher("index.jsp").forward(request, response);
+					
+				} catch (SQLException | NamingException e) {
+					e.printStackTrace();
+					response.sendError(500);
+					return;
+				}
+				
+
+				
+				break;
 			
 		default:
 				response.sendError(500);

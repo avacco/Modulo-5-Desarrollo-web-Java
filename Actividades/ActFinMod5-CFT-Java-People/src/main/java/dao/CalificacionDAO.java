@@ -9,7 +9,7 @@ import modelo.Calificacion;
 
 public interface CalificacionDAO {
 
-	public List<Calificacion> findAllCalificaciones() 								throws SQLException, NamingException;
+	public List<Calificacion> findAllCalificacionesById(int estudianteId) 			throws SQLException, NamingException;
 	public Calificacion findCalificacionById(int asignaturaId, int estudianteId)  	throws SQLException, NamingException;
 	public void createCalificacion(Calificacion calificacion)						throws SQLException, NamingException;
 	public void editCalificacion(Calificacion calificacion)							throws SQLException, NamingException;

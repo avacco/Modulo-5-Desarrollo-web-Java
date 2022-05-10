@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -35,7 +36,20 @@ public class AsignaturaDAOImp implements AsignaturaDAO {
 
 	@Override
 	public Asignatura findAsignaturaById(int asignaturaId) throws SQLException, NamingException {
-		// TODO Auto-generated method stub
+		try(
+				Connection conn = DBUtils.getConexion();
+				PreparedStatement ps = conn.prepareStatement("SELECT * FROM asignatura WHERE id_asignatura = ?");
+			) {
+			ps.setInt(1, asignaturaId);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				int id			= rs.getInt("id_asignatura");
+				String nombre 	= rs.getString("nombre");
+				
+				return new Asignatura(id,nombre);
+			}
+			
+		}
 		return null;
 	}
 

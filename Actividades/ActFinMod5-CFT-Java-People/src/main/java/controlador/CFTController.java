@@ -33,7 +33,7 @@ public class CFTController extends HttpServlet {
 		super.init();
 		this.estudianteDAO = new EstudianteDAOImp();
 		this.asignaturaDAO = new AsignaturaDAOImp();
-		this.calificacionDAO = new CalificacionDAOImp();
+		this.calificacionDAO = new CalificacionDAOImp(estudianteDAO, asignaturaDAO);
 		
 	}
 	
@@ -79,13 +79,27 @@ public class CFTController extends HttpServlet {
 			request.setAttribute("estudiante", estudiante);
 			request.getRequestDispatcher("/WEB-INF/jsp/vista/form-calificaciones.jsp").forward(request, response);
 			break;
+			
+		case "consultar":
+			idEstudiante = Integer.parseInt(request.getParameter("id"));
+			List<Calificacion> calificaciones = null;
+			try {
+				calificaciones = calificacionDAO.findAllCalificacionesById(idEstudiante);
+			} catch (SQLException | NamingException e) {
+				e.printStackTrace();
+				response.sendError(500);
+				return;
+			}
+			request.setAttribute("calificaciones", calificaciones);
+			request.getRequestDispatcher("/WEB-INF/jsp/vista/lista-calificaciones.jsp").forward(request, response);
+			break;
+			
 		default:
 			response.sendError(500);
 			break;
 		}
 	}
 
-	@SuppressWarnings("unused")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String accion = request.getParameter("accion");
 		

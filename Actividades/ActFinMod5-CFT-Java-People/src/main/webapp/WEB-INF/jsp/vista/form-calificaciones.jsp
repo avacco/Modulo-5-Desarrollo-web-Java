@@ -40,7 +40,7 @@
 			  </div>
 			  <div class="col-sm-1 mb-3">
 			    <label class="form-label">Nota</label>
-			    <input type="text" class="form-control" id="nota" name="nota" placeholder="7,0">
+			    <input type="text" class="form-control" id="nota" name="nota" placeholder="7.0">
 			  </div>
 			  <button type="submit" class="btn btn-success">Registrar</button> 
 			  <a href="${pageContext.request.contextPath}/index.jsp" class="btn btn-primary" role="button" data-bs-toggle="button">Volver</a>

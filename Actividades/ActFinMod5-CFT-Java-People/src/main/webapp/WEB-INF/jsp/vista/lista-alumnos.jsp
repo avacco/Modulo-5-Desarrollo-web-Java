@@ -52,8 +52,8 @@
 			</c:forEach>
 		</tbody>
 	</table>
-		<a href="${pageContext.request.contextPath}/index.jsp" class="btn btn-primary" role="button" data-bs-toggle="button">Volver</a>
 </div>		
+<a href="${pageContext.request.contextPath}/index.jsp" class="btn btn-primary" role="button" >Volver</a>
 	
 	<!-- Llama las funciones de sort de DataTable -->
 	<%@ include file="includes/tablesorttrad.jsp" %>
